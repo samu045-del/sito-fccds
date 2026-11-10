@@ -70,6 +70,7 @@
       '<div class="match" aria-label="' + esc(n.casa + ' contro ' + n.trasferta) + '">' + teamRow(n.casa) + '<span class="vs">vs</span>' + teamRow(n.trasferta) + '</div>' +
       '<div class="venue"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF6B6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>' + esc(n.campo) + '</div>' +
       '<div class="countdown" id="cd" aria-label="Conto alla rovescia al calcio d\'inizio"></div>' +
+      (n.inCasa && D.youtube ? '<a class="live" href="' + esc(D.youtube.diretta) + '" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>' + '<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.8 15.1V8.9l5.7 3.1-5.7 3.1z"/></svg>' + '<span>Guardala in diretta su YouTube</span></a>' : '') +
       '<div class="btns"><button class="btn btn-w" type="button" id="ics">Aggiungi al calendario</button>' + (n.linkMappa ? '<a class="btn btn-o" href="' + esc(n.linkMappa) + '" target="_blank" rel="noopener">Come arrivare</a>' : '<a class="btn btn-o" href="calendario.html">Calendario</a>') + '</div>';
     $('#ics').addEventListener('click', function () {
       var st = new Date(n.data), en = new Date(st.getTime() + 2 * 3600 * 1000);
@@ -84,7 +85,7 @@
     countdown($('#cd'), n.data);
 
     var cdsHome = isCDS(u.casa);
-    var esito = { V: ['VITTORIA', 'tag-v'], N: ['PAREGGIO', 'tag-n'], P: ['SCONFITTA', 'tag-p'] }[u.esito] || ['', ''];
+    var esito = { V: ['VITTORIA', 'tag-win'], N: ['PAREGGIO', 'tag-n'], P: ['SCONFITTA', 'tag-p'] }[u.esito] || ['', ''];
     var line = function (t, g) {
       var me = isCDS(t);
       return '<div class="score-row' + (me ? '' : ' them') + '">' + logo(t) + '<span class="n">' + esc(me ? 'FC CDS' : t) + '</span><span class="s">' + g + '</span></div>';
@@ -97,8 +98,10 @@
 
     $('#video').innerHTML =
       '<div class="head"><h2 class="kicker">Ultima diretta</h2><span>' + esc(v.titolo) + '</span></div>' +
-      '<button class="yt" type="button" aria-label="Guarda la diretta: ' + esc(v.titolo) + '"><span class="play"><svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></span><span class="note">Trasmettiamo in diretta le partite in casa. Il video si carica da YouTube solo quando premi play.</span></button>';
-    ytFacade($('#video .yt'), v.youtubeId);
+      '<button class="yt" type="button" aria-label="Guarda la diretta: ' + esc(v.titolo) + '"><span class="play"><svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></span><span class="note">' + (v.incorporabile ? 'Il video si carica da YouTube solo quando premi play.' : 'Si apre su YouTube.') + '</span></button>' +
+      (D.youtube ? '<a class="yt-channel" href="' + esc(D.youtube.canale) + '" target="_blank" rel="noopener">' + '<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.8 15.1V8.9l5.7 3.1-5.7 3.1z"/></svg>' + '<span>Tutte le dirette delle partite in casa sul nostro canale YouTube</span><span aria-hidden="true">→</span></a>' : '');
+    if (v.incorporabile) ytFacade($('#video .yt'), v.youtubeId);
+    else $('#video .yt').addEventListener('click', function () { window.open('https://www.youtube.com/watch?v=' + encodeURIComponent(v.youtubeId), '_blank', 'noopener'); });
   }
 
   /* ---------- SQUADRA ---------- */
@@ -152,7 +155,7 @@
     $('#fixtures').innerHTML = D.calendario.map(function (m) {
       if (m.stato === 'riposo') return '<li class="rest"><span class="g">' + m.g + '</span><span class="d">' + esc(m.data) + '</span><span class="m">Turno di riposo</span><span class="r"><span class="tag tag-n">RIPOSO</span></span></li>';
       var cls = m.stato === 'prossima' ? 'next' : (m.ris ? 'win' : '');
-      var tag = m.stato === 'prossima' ? '<span class="tag tag-v">PROSSIMA</span>' : (m.ris ? '<span class="sc">' + esc(m.ris) + '</span><span class="tag ' + ({ V: 'tag-v', N: 'tag-n', P: 'tag-p' }[m.stato] || 'tag-n') + '">' + esc(m.stato) + '</span>' : '<span class="tag tag-h">' + (isCDS(m.casa) ? 'CASA' : 'FUORI') + '</span>');
+      var tag = m.stato === 'prossima' ? '<span class="tag tag-v">PROSSIMA</span>' : (m.ris ? '<span class="sc">' + esc(m.ris) + '</span><span class="tag ' + ({ V: 'tag-win', N: 'tag-n', P: 'tag-p' }[m.stato] || 'tag-n') + '">' + esc(m.stato) + '</span>' : '<span class="tag tag-h">' + (isCDS(m.casa) ? 'CASA' : 'FUORI') + '</span>');
       if (m.ris && m.stato !== 'V') cls = '';
       var t = function (x) { return '<span class="tm">' + logo(x, 'mini') + (isCDS(x) ? '<b>' + esc(x) + '</b>' : esc(x)) + '</span>'; };
       return '<li class="' + cls + '"><span class="g">' + m.g + '</span><span class="d">' + esc(m.data) + '</span><span class="m">' + t(m.casa) + ' <span style="opacity:.55">–</span> ' + t(m.trasferta) + '</span><span class="r">' + tag + '</span></li>';

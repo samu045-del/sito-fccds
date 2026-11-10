@@ -60,7 +60,15 @@ window.CDS = {
   // Trasmettiamo in diretta solo le partite in casa: qui va l'ultima diretta disponibile.
   ultimaDiretta: {
     titolo: "FC CDS – Palmarola Club 7-3",
-    youtubeId: "M16NWXeht60"
+    youtubeId: "M16NWXeht60",
+    // true solo se su YouTube Studio il video ha "Consenti incorporamento" attivo; se false, il box apre YouTube
+    incorporabile: false
+  },
+
+  // Canale YouTube: le dirette delle partite in casa passano da qui
+  youtube: {
+    canale: "https://www.youtube.com/@FootballClub-CDS",
+    diretta: "https://www.youtube.com/@FootballClub-CDS/live"
   },
 
   riepilogo: { posizione: "4°", punti: 9, vittorie: "3/3", golFatti: 14 },
@@ -161,7 +169,7 @@ window.CDS = {
     email: "[email del club]",
     instagram: "",
     tiktok: "",
-    youtube: ""
+    youtube: "https://www.youtube.com/@FootballClub-CDS"
   },
 
   partner: [
