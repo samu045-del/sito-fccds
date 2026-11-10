@@ -14,7 +14,7 @@ window.CDS = {
     giornata: "G5",
     data: "2026-11-14T18:00:00+01:00",
     etichettaData: "Sabato 14 novembre 2026 · ore 18:00",
-    casa: "CDS F.C.",
+    casa: "FC CDS",
     trasferta: "Real Roma Nord",
     inCasa: true,
     campo: "Centro Sportivo Dabliu Eur",
@@ -25,7 +25,7 @@ window.CDS = {
     giornata: "G4",
     etichettaData: "Domenica 8 novembre 2026",
     casa: "Atletico",
-    trasferta: "CDS F.C.",
+    trasferta: "FC CDS",
     golCasa: 1,
     golTrasferta: 3,
     esito: "V",
@@ -59,7 +59,7 @@ window.CDS = {
 
   // Trasmettiamo in diretta solo le partite in casa: qui va l'ultima diretta disponibile.
   ultimaDiretta: {
-    titolo: "CDS F.C. – Palmarola Club 7-3",
+    titolo: "FC CDS – Palmarola Club 7-3",
     youtubeId: "M16NWXeht60"
   },
 
@@ -67,20 +67,20 @@ window.CDS = {
 
   calendario: [
     { g: "G1", data: "Dom 18 ott", casa: "", trasferta: "", stato: "riposo" },
-    { g: "G2", data: "Dom 25 ott · 15:00", casa: "Amatori Allumiere 1983", trasferta: "CDS F.C.", ris: "3-4", stato: "V" },
-    { g: "G3", data: "Sab 31 ott · 18:00", casa: "CDS F.C.", trasferta: "Palmarola Club", ris: "7-3", stato: "V" },
-    { g: "G4", data: "Dom 8 nov · 15:00", casa: "Atletico", trasferta: "CDS F.C.", ris: "1-3", stato: "V" },
-    { g: "G5", data: "Sab 14 nov · 18:00", casa: "CDS F.C.", trasferta: "Real Roma Nord", stato: "prossima" },
-    { g: "G6", data: "Dom 22 nov · 15:00", casa: "Pol. Pian Due Torri", trasferta: "CDS F.C." },
-    { g: "G7", data: "Dom 29 nov · 15:00", casa: "CDS F.C.", trasferta: "Pro Calcio Cerveteri" },
-    { g: "G8", data: "Dom 6 dic · 15:00", casa: "F.C. Palombara", trasferta: "CDS F.C." },
-    { g: "G9", data: "Dom 13 dic · 15:00", casa: "Black Lions", trasferta: "CDS F.C." },
-    { g: "G10", data: "Dom 20 dic · 15:00", casa: "CDS F.C.", trasferta: "Academy Monti della Tolfa" },
-    { g: "G11", data: "Dom 10 gen · 15:00", casa: "Delta Calcio", trasferta: "CDS F.C." },
-    { g: "G12", data: "Dom 17 gen · 15:00", casa: "CDS F.C.", trasferta: "Vigor Mellis" },
-    { g: "G13", data: "Dom 24 gen · 15:00", casa: "GDZ Campagnano", trasferta: "CDS F.C." },
-    { g: "G14", data: "Dom 31 gen · 15:00", casa: "CDS F.C.", trasferta: "DLF Youth Academy" },
-    { g: "G15", data: "Dom 7 feb · 15:00", casa: "Tusker Roma", trasferta: "CDS F.C." }
+    { g: "G2", data: "Dom 25 ott · 15:00", casa: "Amatori Allumiere 1983", trasferta: "FC CDS", ris: "3-4", stato: "V" },
+    { g: "G3", data: "Sab 31 ott · 18:00", casa: "FC CDS", trasferta: "Palmarola Club", ris: "7-3", stato: "V" },
+    { g: "G4", data: "Dom 8 nov · 15:00", casa: "Atletico", trasferta: "FC CDS", ris: "1-3", stato: "V" },
+    { g: "G5", data: "Sab 14 nov · 18:00", casa: "FC CDS", trasferta: "Real Roma Nord", stato: "prossima" },
+    { g: "G6", data: "Dom 22 nov · 15:00", casa: "Pol. Pian Due Torri", trasferta: "FC CDS" },
+    { g: "G7", data: "Dom 29 nov · 15:00", casa: "FC CDS", trasferta: "Pro Calcio Cerveteri" },
+    { g: "G8", data: "Dom 6 dic · 15:00", casa: "F.C. Palombara", trasferta: "FC CDS" },
+    { g: "G9", data: "Dom 13 dic · 15:00", casa: "Black Lions", trasferta: "FC CDS" },
+    { g: "G10", data: "Dom 20 dic · 15:00", casa: "FC CDS", trasferta: "Academy Monti della Tolfa" },
+    { g: "G11", data: "Dom 10 gen · 15:00", casa: "Delta Calcio", trasferta: "FC CDS" },
+    { g: "G12", data: "Dom 17 gen · 15:00", casa: "FC CDS", trasferta: "Vigor Mellis" },
+    { g: "G13", data: "Dom 24 gen · 15:00", casa: "GDZ Campagnano", trasferta: "FC CDS" },
+    { g: "G14", data: "Dom 31 gen · 15:00", casa: "FC CDS", trasferta: "DLF Youth Academy" },
+    { g: "G15", data: "Dom 7 feb · 15:00", casa: "Tusker Roma", trasferta: "FC CDS" }
   ],
 
   // squadra, punti, giocate, vinte, pari, perse, gol fatti, gol subiti, differenza
@@ -88,7 +88,7 @@ window.CDS = {
     ["F.C. Palombara", 10, 4, 3, 1, 0, 10, 2, 8],
     ["Pro Calcio Cerveteri", 10, 4, 3, 1, 0, 13, 6, 7],
     ["Tusker Roma", 9, 4, 3, 0, 1, 11, 3, 8],
-    ["Football Club CdS", 9, 3, 3, 0, 0, 14, 7, 7],
+    ["FC CDS", 9, 3, 3, 0, 0, 14, 7, 7],
     ["Academy Monti della Tolfa", 9, 3, 3, 0, 0, 10, 4, 6],
     ["Real Roma Nord", 8, 4, 2, 2, 0, 9, 4, 5],
     ["DLF Youth Academy", 7, 4, 2, 1, 1, 18, 9, 9],

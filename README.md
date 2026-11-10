@@ -1,6 +1,6 @@
 # Sito FC CDS
 
-Sito ufficiale del CDS Football Club. Statico (HTML, CSS, JS), ospitato su Cloudflare Pages.
+Sito ufficiale del FC CDS. Statico (HTML, CSS, JS), ospitato su Cloudflare Pages.
 
 ## Aggiornamento settimanale
 Si modifica **solo** `data/dati.js`:

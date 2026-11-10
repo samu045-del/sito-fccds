@@ -22,7 +22,7 @@
   var h = $('#site-header');
   if (h) {
     h.className = 'site-header';
-    h.innerHTML = '<div class="wrap"><a class="brand" href="index.html"><img src="assets/img/logo-160.png" alt="Stemma CDS Football Club" width="160" height="169"><span>CDS Football Club</span></a>' +
+    h.innerHTML = '<div class="wrap"><a class="brand" href="index.html"><img src="assets/img/logo-160.png" alt="Stemma FC CDS" width="160" height="169"><span>FC CDS</span></a>' +
       '<button class="menu-btn" type="button" aria-label="Apri il menu" aria-expanded="false" aria-controls="nav"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>' +
       '<nav class="nav" id="nav" aria-label="Menu principale">' + links.map(function (l) { return '<a href="' + l[0] + '"' + (l[2] === page ? ' aria-current="page"' : '') + '>' + l[1] + '</a>'; }).join('') + '</nav></div>';
     var btn = $('.menu-btn', h), nav = $('#nav', h);
@@ -31,7 +31,7 @@
   var f = $('#site-footer');
   if (f) {
     f.className = 'site-footer';
-    f.innerHTML = '<div class="wrap"><img src="assets/img/monogramma.png" alt="Monogramma CDS"><nav aria-label="Link legali"><a href="#">Privacy policy</a><a href="#">Cookie policy</a></nav><span>© ' + new Date().getFullYear() + ' CDS Football Club</span></div>';
+    f.innerHTML = '<div class="wrap"><img src="assets/img/monogramma.png" alt="Monogramma CDS"><nav aria-label="Link legali"><a href="#">Privacy policy</a><a href="#">Cookie policy</a></nav><span>© ' + new Date().getFullYear() + ' FC CDS</span></div>';
   }
 
   /* ---------- Countdown ---------- */
@@ -87,7 +87,7 @@
     var esito = { V: ['VITTORIA', 'tag-v'], N: ['PAREGGIO', 'tag-n'], P: ['SCONFITTA', 'tag-p'] }[u.esito] || ['', ''];
     var line = function (t, g) {
       var me = isCDS(t);
-      return '<div class="score-row' + (me ? '' : ' them') + '">' + logo(t) + '<span class="n">' + esc(me ? 'CDS Football Club' : t) + '</span><span class="s">' + g + '</span></div>';
+      return '<div class="score-row' + (me ? '' : ' them') + '">' + logo(t) + '<span class="n">' + esc(me ? 'FC CDS' : t) + '</span><span class="s">' + g + '</span></div>';
     };
     $('#last').innerHTML =
       '<div class="row-h"><h2 class="kicker">Last match</h2><span style="display:flex;gap:6px"><span class="tag tag-h">' + (cdsHome ? 'IN CASA' : 'IN TRASFERTA') + '</span><span class="tag ' + esito[1] + '">' + esito[0] + '</span></span></div>' +
