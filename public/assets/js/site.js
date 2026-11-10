@@ -17,7 +17,7 @@
   var links = [
     ['index.html', 'Home', 'home'], ['squadra.html', 'Squadra', 'squadra'],
     ['calendario.html', 'Calendario & Classifica', 'calendario'], ['club.html', 'Il Club', 'club'],
-    ['partner.html', 'Partner', 'partner'], ['contatti.html', 'Contatti', 'contatti']
+    ['partner.html', 'Partner', 'partner'], ['contatti.html', 'Contatti', 'contatti'], ['gioca.html', 'Gioca', 'gioca']
   ];
   var h = $('#site-header');
   if (h) {
