@@ -3,7 +3,7 @@
 Sito ufficiale del FC CDS. Statico (HTML, CSS, JS), ospitato su Cloudflare Pages.
 
 ## Aggiornamento settimanale
-Si modifica **solo** `data/dati.js`:
+Si modifica **solo** `public/data/dati.js`:
 1. `prossimaPartita` – data, avversario, campo
 2. `ultimaPartita` – risultato e marcatori
 3. `ultimaDiretta` – ID del video YouTube dell'ultima partita in casa
@@ -11,5 +11,5 @@ Si modifica **solo** `data/dati.js`:
 5. `riepilogo` – posizione, punti, vittorie, gol fatti
 
 ## Foto
-- Giocatori: `assets/img/giocatori/cognome-nome.jpg` (600×800)
-- Staff: `assets/img/staff/`
+- Giocatori: `public/assets/img/giocatori/cognome-nome.jpg` (600×800)
+- Staff: `public/assets/img/staff/`
