@@ -173,7 +173,7 @@ window.CDS = {
   },
 
   partner: [
-    { nome: "Eplay24", ruolo: "Main sponsor" },
+    { nome: "Eplay24.sport", ruolo: "Main sponsor", link: "https://eplay24.sport" },
     { nome: "Corriere dello Sport", ruolo: "Partner" }
   ]
 };
