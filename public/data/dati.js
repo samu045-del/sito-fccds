@@ -153,16 +153,16 @@ window.CDS = {
     { nome: "Dario", cognome: "Stragapede", ruolo: "ATT", foto: "stragapede-dario.jpg" },
 
     // In foto con la maglia ma non ancora in rosa su Tuttocampo: ruolo da confermare
-    { nome: "Gaetano", cognome: "Carnevale", ruolo: "?", foto: "carnevale-gaetano.jpg" },
     { nome: "Andrea", cognome: "Ferro", ruolo: "?", foto: "ferro-andrea.jpg" },
     { nome: "Alessio", cognome: "Sanfilippo", ruolo: "?", foto: "sanfilippo-alessio.jpg" }
   ],
 
   staff: [
+    { nome: "Daniele", cognome: "Giuliani", ruolo: "[Ruolo]", foto: "giuliani-daniele.jpg" },
     { nome: "Emanuele", cognome: "Costanzi", ruolo: "[Ruolo]", foto: "costanzi-emanuele.jpg" },
     { nome: "Davide", cognome: "Fazio", ruolo: "[Ruolo]", foto: "fazio-davide.jpg" },
-    { nome: "Daniele", cognome: "Giuliani", ruolo: "[Ruolo]", foto: "giuliani-daniele.jpg" },
-    { nome: "Simone", cognome: "[Cognome]", ruolo: "[Ruolo]", foto: "simone.jpg" }
+    { nome: "Simone", cognome: "[Cognome]", ruolo: "[Ruolo]", foto: "simone.jpg" },
+    { nome: "Gaetano", cognome: "Carnevale", ruolo: "[Ruolo]", foto: "carnevale-gaetano.jpg" }
   ],
 
   contatti: {
