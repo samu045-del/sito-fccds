@@ -115,7 +115,7 @@
     ];
     var turnIcon = '<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E41B1D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>';
     var card = function (p, dir, isStaff) {
-      var front = p.foto ? '<img class="ph" src="assets/img/' + dir + '/' + esc(p.foto) + '" alt="' + esc(p.nome + ' ' + p.cognome) + '" loading="lazy" width="600" height="800">'
+      var front = p.foto ? '<img class="ph" src="assets/img/' + dir + '/' + esc(p.foto) + '" alt="' + esc(p.nome + ' ' + p.cognome) + '" loading="lazy" width="640" height="800">'
         : '<div class="nophoto"><img src="assets/img/monogramma.png" alt="">FOTO IN ARRIVO</div>';
       var badge = isStaff ? '' : (p.ruolo && p.ruolo !== '?' ? '<span class="role">' + esc(p.ruolo) + '</span>' : '');
       var sub = isStaff ? esc(p.ruolo) : esc(p.nome);

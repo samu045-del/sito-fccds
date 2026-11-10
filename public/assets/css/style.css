@@ -146,7 +146,7 @@ html,body{overflow-x:hidden}
 .role-h .count{font-family:var(--display);font-size:30px;color:var(--red)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:22px}
 @media (max-width:560px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}}
-.fig{position:relative;display:block;width:100%;aspect-ratio:3/4;padding:0;border:0;background:var(--navy);cursor:pointer;font:inherit;text-align:left;color:inherit;overflow:hidden;box-shadow:0 2px 6px rgba(7,23,57,.18)}
+.fig{position:relative;display:block;width:100%;aspect-ratio:4/5;padding:0;border:0;background:var(--navy);cursor:pointer;font:inherit;text-align:left;color:inherit;overflow:hidden;box-shadow:0 2px 6px rgba(7,23,57,.18)}
 .fig .face{position:absolute;inset:0}
 .fig .back{display:none;background:var(--navy);color:#fff;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:16px;text-align:center}
 .fig.flipped .front{display:none}
