@@ -79,9 +79,12 @@ h1,h2,h3{margin:0}
 }
 
 /* Section boxes (home) */
-.duo{display:flex;flex-wrap:wrap;gap:28px;padding-top:64px;padding-bottom:80px}
+.duo{display:flex;flex-direction:column;gap:28px;padding-top:64px;padding-bottom:80px}
 .card{background:#fff;box-shadow:0 1px 2px rgba(7,23,57,.08)}
-.last{flex:1 1 380px;border-top:6px solid var(--navy);padding:30px;display:flex;flex-direction:column;gap:22px}
+.last{border-top:6px solid var(--navy);padding:30px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:22px 48px;align-items:start}
+.last>.row-h,.last>p{grid-column:1 / -1}
+.last .scorers{border-top:0!important;padding-top:0!important;border-left:1px solid var(--line);padding-left:32px}
+@media (max-width:760px){.last{grid-template-columns:1fr;padding:22px}.last .scorers{border-left:0;padding-left:0;border-top:1px solid var(--line)!important;padding-top:18px!important}}
 .row-h{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .tag{white-space:nowrap}
 .tag{font-size:11px;font-weight:800;letter-spacing:.12em;padding:5px 9px}
@@ -97,14 +100,16 @@ h1,h2,h3{margin:0}
 .dots{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;font-size:16px}
 .dots li{display:flex;align-items:center;gap:8px}
 .dots li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--red)}
-.video{flex:1.4 1 480px;background:var(--navy-d);color:#fff;display:flex;flex-direction:column}
+.video{width:100%;background:var(--navy-d);color:#fff;display:flex;flex-direction:column;overflow:hidden}
 .video .head{padding:22px 30px 16px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
 .video .head span{color:var(--soft2);font-size:14px}
-.yt{position:relative;flex:1;min-height:320px;aspect-ratio:16/9;border:0;padding:0;cursor:pointer;background:#071739 url(../img/squadra.jpg) center 72%/cover;color:#fff;width:100%;font:inherit}
+.yt{position:relative;display:block;width:100%;aspect-ratio:16/9;border:0;padding:0;cursor:pointer;background:#071739 url(../img/squadra.jpg) center 72%/cover;color:#fff;width:100%;font:inherit}
 .yt::before{content:"";position:absolute;inset:0;background:rgba(7,23,57,.45)}
 .yt .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:84px;height:84px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center}
 .yt .note{position:absolute;left:20px;bottom:16px;right:20px;font-size:12px;text-align:left;color:var(--soft)}
-.yt-frame{width:100%;aspect-ratio:16/9;border:0;display:block}
+.yt-frame{width:100%;height:auto;aspect-ratio:16/9;border:0;display:block}
+@media (max-width:560px){.yt .play{width:64px;height:64px}.yt .note{font-size:11px;left:12px;right:12px;bottom:10px}.video .head{padding:16px 18px 12px}}
+html,body{overflow-x:hidden}
 
 /* Page hero (inner pages) */
 .page-hero{background:var(--navy) url(../img/monogramma.png) no-repeat right var(--pad) center/auto 62%;color:#fff}
