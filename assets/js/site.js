@@ -64,15 +64,23 @@
   /* ---------- HOME ---------- */
   if (page === 'home' && D.prossimaPartita) {
     var n = D.prossimaPartita, u = D.ultimaPartita, v = D.ultimaDiretta;
-    var teamRow = function (t) {
-      return '<div class="team">' + logo(t) + '<span>' + esc(t) + '</span></div>';
-    };
+    var teamRow = function (t) { return '<div class="team">' + logo(t) + '<span>' + esc(t) + '</span></div>'; };
     $('#next').innerHTML =
-      '<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><span class="pill">NEXT MATCH</span><span class="date">' + esc(n.etichettaData) + '</span></div>' +
-      '<div class="match" aria-label="' + esc(n.casa + ' contro ' + n.trasferta) + '">' + teamRow(n.casa) + '<span class="vs">VS</span>' + teamRow(n.trasferta) + '</div>' +
-      '<div class="venue"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF6B6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>' + esc(n.campo) + (n.inCasa ? ' · in casa' : '') + '</div>' +
-      '<div class="spacer"></div><div class="countdown" id="cd" aria-label="Conto alla rovescia al calcio d\'inizio"></div>' +
-      '<div class="btns"><a class="btn btn-w" href="calendario.html">Calendario</a>' + (n.linkMappa ? '<a class="btn btn-o" href="' + esc(n.linkMappa) + '" target="_blank" rel="noopener">Come arrivare</a>' : '<a class="btn btn-o" href="calendario.html#classifica">Classifica</a>') + '</div>';
+      '<div class="head"><span class="pill">NEXT MATCH</span><span class="date">' + esc(n.etichettaData) + '</span></div>' +
+      '<div class="match" aria-label="' + esc(n.casa + ' contro ' + n.trasferta) + '">' + teamRow(n.casa) + '<span class="vs">vs</span>' + teamRow(n.trasferta) + '</div>' +
+      '<div class="venue"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF6B6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>' + esc(n.campo) + '</div>' +
+      '<div class="countdown" id="cd" aria-label="Conto alla rovescia al calcio d\'inizio"></div>' +
+      '<div class="btns"><button class="btn btn-w" type="button" id="ics">Aggiungi al calendario</button>' + (n.linkMappa ? '<a class="btn btn-o" href="' + esc(n.linkMappa) + '" target="_blank" rel="noopener">Come arrivare</a>' : '<a class="btn btn-o" href="calendario.html">Calendario</a>') + '</div>';
+    $('#ics').addEventListener('click', function () {
+      var st = new Date(n.data), en = new Date(st.getTime() + 2 * 3600 * 1000);
+      var z = function (d) { return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, ''); };
+      var ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//FC CDS//IT', 'BEGIN:VEVENT', 'UID:' + z(st) + '@fccds', 'DTSTAMP:' + z(new Date()), 'DTSTART:' + z(st), 'DTEND:' + z(en),
+        'SUMMARY:' + n.casa + ' - ' + n.trasferta, 'LOCATION:' + n.campo, 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' }));
+      a.download = 'cds-' + n.giornata.toLowerCase() + '.ics';
+      document.body.appendChild(a); a.click(); a.remove();
+    });
     countdown($('#cd'), n.data);
 
     var cdsHome = isCDS(u.casa);

@@ -44,35 +44,37 @@ h1,h2,h3{margin:0}
   .nav a[aria-current="page"]{color:var(--red-ll);border-bottom-color:rgba(255,255,255,.12)}
 }
 
-/* Hero next match (home) */
-.hero{position:relative;color:#fff;background:var(--navy) url(../img/squadra.jpg) no-repeat right 68%/58% auto;overflow:hidden}
-.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--navy) 38%,rgba(11,35,87,.85) 52%,rgba(11,35,87,0) 78%)}
-.hero .wrap{position:relative;padding-top:72px;padding-bottom:64px;display:flex;flex-direction:column;gap:30px;min-height:680px}
-.hero .date{font-size:15px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--soft)}
-.match{display:flex;flex-direction:column;gap:4px;max-width:640px}
-.match .team{display:flex;align-items:center;gap:16px;font-family:var(--display);font-size:clamp(44px,6.4vw,78px);line-height:1.02}
-.match .team img,.match .team .badge{width:clamp(44px,5vw,64px);flex:none}
-.match .vs{font-size:14px;font-weight:800;letter-spacing:.3em;color:var(--red-l);padding-left:clamp(60px,6.2vw,80px)}
-.badge{aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;font-family:var(--body);font-weight:800;font-size:14px;letter-spacing:.04em;color:#fff}
-.venue{display:flex;align-items:center;gap:10px;color:var(--soft);font-weight:500}
-.countdown{display:flex;gap:10px;flex-wrap:wrap}
-.countdown div{width:92px;padding:12px 0;text-align:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22)}
+/* Hero next match (home): centrata, logone sullo sfondo */
+.hero{position:relative;color:#fff;background:var(--navy-d) url(../img/sfondo-logo.jpg) no-repeat center 30%/cover;overflow:hidden;text-align:center}
+.hero::before{content:"";position:absolute;inset:0;background:rgba(7,23,57,.35)}
+.hero .wrap{position:relative;max-width:1080px;padding-top:56px;padding-bottom:64px;display:flex;flex-direction:column;align-items:center;gap:26px}
+.hero .date{font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--soft)}
+.hero .head{display:flex;flex-direction:column;align-items:center;gap:12px}
+.match{width:100%;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:start;gap:20px}
+.match .team{display:flex;flex-direction:column;align-items:center;gap:18px;font-family:var(--display);font-size:clamp(30px,4.6vw,56px);line-height:1.05}
+.match .team img,.match .team .badge-d{width:clamp(88px,11vw,140px);height:clamp(88px,11vw,140px);object-fit:contain}
+.match .team .badge-d{font-size:24px}
+.match .vs{font-family:var(--display);font-size:clamp(26px,3vw,40px);line-height:1;color:var(--red-l);margin-top:calc(clamp(88px,11vw,140px)/2 - .5em)}
+.venue{display:flex;align-items:center;justify-content:center;gap:8px;color:var(--soft);font-weight:500}
+.countdown{display:flex;gap:10px;justify-content:center}
+.countdown div{width:92px;padding:12px 0;text-align:center;background:rgba(7,23,57,.65);border:1px solid rgba(255,255,255,.22)}
 .countdown div:last-child{background:var(--red);border-color:var(--red)}
 .countdown b{display:block;font-family:var(--display);font-weight:500;font-size:38px;line-height:1}
 .countdown span{display:block;font-size:11px;font-weight:700;letter-spacing:.18em;margin-top:6px}
-.btns{display:flex;gap:10px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;font-weight:800;font-size:14px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;border:2px solid #fff}
+.btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;font-weight:800;font-size:14px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;border:2px solid #fff;cursor:pointer;font-family:inherit}
 .btn-w{background:#fff;color:var(--navy)}
-.btn-o{color:#fff}
-@media (max-width:760px){
-  .hero{background-size:cover;background-position:center bottom}
-  .hero::before{background:linear-gradient(180deg,rgba(11,35,87,.94) 0%,rgba(11,35,87,.6) 45%,rgba(11,35,87,.05) 68%,rgba(7,23,57,.88) 100%)}
-  .hero .wrap{min-height:760px;padding-top:32px;padding-bottom:24px;gap:18px}
-  .hero .spacer{flex:1}
-  .countdown{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-  .countdown div{width:auto;background:rgba(7,23,57,.7)}
+.btn-o{color:#fff;background:transparent}
+@media (max-width:640px){
+  .hero{background-position:center top}
+  .hero .wrap{padding-top:32px;padding-bottom:32px;gap:22px}
+  .match{gap:8px}
+  .match .team{font-size:26px;gap:12px}
+  .match .vs{font-size:24px;margin-top:32px}
+  .countdown{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;width:100%}
+  .countdown div{width:auto}
   .countdown b{font-size:30px}.countdown span{font-size:10px}
-  .btns{display:grid;grid-template-columns:1fr 1fr}
+  .btns{display:grid;grid-template-columns:1fr 1fr;width:100%}
   .btn{font-size:12px;padding:0 8px}
 }
 
