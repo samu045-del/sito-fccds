@@ -7,6 +7,12 @@
   var isCDS = function (t) { return /CDS/i.test(t || ''); };
   var initials = function (t) { return (t || '').split(/\s+/).filter(function (w) { return /^[A-Za-zÀ-ú]/.test(w) && w.length > 2; }).slice(0, 3).map(function (w) { return w[0].toUpperCase(); }).join(''); };
 
+  var logo = function (t, cls) {
+    if (isCDS(t)) return '<img class="' + (cls || '') + '" src="assets/img/logo-160.png" alt="" width="160" height="169">';
+    var f = (D.loghi || {})[t];
+    return f ? '<img class="' + (cls || '') + '" src="assets/img/squadre/' + esc(f) + '" alt="" width="160" height="160" loading="lazy">' : '<span class="badge-d ' + (cls || '') + '" aria-hidden="true">' + esc(initials(t)) + '</span>';
+  };
+
   /* ---------- Header e footer ---------- */
   var links = [
     ['index.html', 'Home', 'home'], ['squadra.html', 'Squadra', 'squadra'],
@@ -59,7 +65,7 @@
   if (page === 'home' && D.prossimaPartita) {
     var n = D.prossimaPartita, u = D.ultimaPartita, v = D.ultimaDiretta;
     var teamRow = function (t) {
-      return '<div class="team">' + (isCDS(t) ? '<img src="assets/img/logo-160.png" alt="">' : '<span class="badge" aria-hidden="true">' + esc(initials(t)) + '</span>') + '<span>' + esc(t) + '</span></div>';
+      return '<div class="team">' + logo(t) + '<span>' + esc(t) + '</span></div>';
     };
     $('#next').innerHTML =
       '<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><span class="pill">NEXT MATCH</span><span class="date">' + esc(n.etichettaData) + '</span></div>' +
@@ -70,14 +76,15 @@
     countdown($('#cd'), n.data);
 
     var cdsHome = isCDS(u.casa);
-    var us = cdsHome ? u.golCasa : u.golTrasferta, them = cdsHome ? u.golTrasferta : u.golCasa, opp = cdsHome ? u.trasferta : u.casa;
     var esito = { V: ['VITTORIA', 'tag-v'], N: ['PAREGGIO', 'tag-n'], P: ['SCONFITTA', 'tag-p'] }[u.esito] || ['', ''];
+    var line = function (t, g) {
+      var me = isCDS(t);
+      return '<div class="score-row' + (me ? '' : ' them') + '">' + logo(t) + '<span class="n">' + esc(me ? 'CDS Football Club' : t) + '</span><span class="s">' + g + '</span></div>';
+    };
     $('#last').innerHTML =
-      '<div class="row-h"><h2 class="kicker">Last match</h2><span class="tag ' + esito[1] + '">' + esito[0] + '</span></div>' +
-      '<p style="margin:-10px 0 0;color:var(--muted);font-size:14px">' + esc(u.giornata + ' · ' + u.etichettaData + ' · ' + u.casa + ' – ' + u.trasferta) + '</p>' +
-      '<div><div class="score-row"><img src="assets/img/logo-160.png" alt=""><span class="n">CDS Football Club</span><span class="s">' + us + '</span></div>' +
-      '<div class="hr" style="margin:12px 0"></div>' +
-      '<div class="score-row them"><span class="badge-d" aria-hidden="true">' + esc(initials(opp)) + '</span><span class="n">' + esc(opp) + '</span><span class="s">' + them + '</span></div></div>' +
+      '<div class="row-h"><h2 class="kicker">Last match</h2><span style="display:flex;gap:6px"><span class="tag tag-h">' + (cdsHome ? 'IN CASA' : 'IN TRASFERTA') + '</span><span class="tag ' + esito[1] + '">' + esito[0] + '</span></span></div>' +
+      '<p style="margin:-10px 0 0;color:var(--muted);font-size:14px">' + esc(u.giornata + ' · ' + u.etichettaData) + '</p>' +
+      '<div>' + line(u.casa, u.golCasa) + '<div class="hr" style="margin:12px 0"></div>' + line(u.trasferta, u.golTrasferta) + '</div>' +
       '<div class="scorers" style="border-top:1px solid var(--line);padding-top:18px"><h3>MARCATORI CDS</h3><ul class="dots">' + u.marcatoriCDS.map(function (m) { return '<li>' + esc(m) + '</li>'; }).join('') + '</ul></div>';
 
     $('#video').innerHTML =
@@ -139,13 +146,13 @@
       var cls = m.stato === 'prossima' ? 'next' : (m.ris ? 'win' : '');
       var tag = m.stato === 'prossima' ? '<span class="tag tag-v">PROSSIMA</span>' : (m.ris ? '<span class="sc">' + esc(m.ris) + '</span><span class="tag ' + ({ V: 'tag-v', N: 'tag-n', P: 'tag-p' }[m.stato] || 'tag-n') + '">' + esc(m.stato) + '</span>' : '<span class="tag tag-h">' + (isCDS(m.casa) ? 'CASA' : 'FUORI') + '</span>');
       if (m.ris && m.stato !== 'V') cls = '';
-      var t = function (x) { return isCDS(x) ? '<b>' + esc(x) + '</b>' : esc(x); };
+      var t = function (x) { return '<span class="tm">' + logo(x, 'mini') + (isCDS(x) ? '<b>' + esc(x) + '</b>' : esc(x)) + '</span>'; };
       return '<li class="' + cls + '"><span class="g">' + m.g + '</span><span class="d">' + esc(m.data) + '</span><span class="m">' + t(m.casa) + ' <span style="opacity:.55">–</span> ' + t(m.trasferta) + '</span><span class="r">' + tag + '</span></li>';
     }).join('');
     $('#cla-h').textContent = 'DOPO LA ' + D.giornataClassifica + 'ª GIORNATA';
     $('#table tbody').innerHTML = D.classifica.map(function (r, i) {
       var me = isCDS(r[0]);
-      return '<tr' + (me ? ' class="us"' : '') + '><td class="pos t-l">' + (i + 1) + '</td><th scope="row" class="t-l">' + esc(r[0]) + '</th><td class="pt">' + r[1] + '</td><td>' + r[2] + '</td><td class="hide-s">' + r[3] + '</td><td class="hide-s">' + r[4] + '</td><td class="hide-s">' + r[5] + '</td><td class="hide-s">' + r[6] + '</td><td class="hide-s">' + r[7] + '</td><td>' + (r[8] > 0 ? '+' : '') + r[8] + '</td></tr>';
+      return '<tr' + (me ? ' class="us"' : '') + '><td class="pos t-l">' + (i + 1) + '</td><th scope="row" class="t-l"><span class="tm">' + logo(r[0], 'mini') + esc(r[0]) + '</span></th><td class="pt">' + r[1] + '</td><td>' + r[2] + '</td><td class="hide-s">' + r[3] + '</td><td class="hide-s">' + r[4] + '</td><td class="hide-s">' + r[5] + '</td><td class="hide-s">' + r[6] + '</td><td class="hide-s">' + r[7] + '</td><td>' + (r[8] > 0 ? '+' : '') + r[8] + '</td></tr>';
     }).join('');
     $('#src').textContent = 'Fonte: Tuttocampo, aggiornata al ' + D.aggiornato + '.';
     var top = D.marcatori[0], tot = R.golFatti || 1;
@@ -153,6 +160,12 @@
     var bars = function (list, key) { var mx = Math.max.apply(null, list.map(function (x) { return x[key]; })); return list.map(function (x) { return '<li><span class="n">' + esc(x.nome) + '</span><span class="b"><i style="width:' + Math.round(x[key] / mx * 100) + '%"></i></span><span class="v">' + x[key] + '</span></li>'; }).join(''); };
     $('#scorers').innerHTML = bars(D.marcatori.slice(1), 'gol');
     $('#assists').innerHTML = bars(D.assist, 'n');
+  }
+
+  /* ---------- CAMPO DI CASA (Club e Contatti) ---------- */
+  var cc = D.campoCasa, campoEl = $('#campo');
+  if (cc && campoEl) {
+    campoEl.innerHTML = '<p><strong>' + esc(cc.nome) + '</strong><br>' + esc(cc.indirizzo) + '</p><p style="margin:0"><a class="btn btn-w" style="border-color:var(--navy)" href="' + esc(cc.linkMappa) + '" target="_blank" rel="noopener">Come arrivare</a></p>';
   }
 
   /* ---------- PARTNER ---------- */

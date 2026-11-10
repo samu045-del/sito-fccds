@@ -80,7 +80,8 @@ h1,h2,h3{margin:0}
 .duo{display:flex;flex-wrap:wrap;gap:28px;padding-top:64px;padding-bottom:80px}
 .card{background:#fff;box-shadow:0 1px 2px rgba(7,23,57,.08)}
 .last{flex:1 1 380px;border-top:6px solid var(--navy);padding:30px;display:flex;flex-direction:column;gap:22px}
-.row-h{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.row-h{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.tag{white-space:nowrap}
 .tag{font-size:11px;font-weight:800;letter-spacing:.12em;padding:5px 9px}
 .tag-v{background:var(--red);color:#fff}.tag-n{background:#D3D8E3;color:var(--navy)}.tag-p{background:var(--navy);color:#fff}
 .score-row{display:flex;align-items:center;gap:14px}
@@ -228,3 +229,11 @@ tr.us th{font-weight:800}
 .site-footer img{height:38px;width:auto}
 .site-footer nav{display:flex;gap:18px;flex-wrap:wrap}
 .site-footer a{color:var(--soft2)}
+
+/* Loghi squadre */
+.tm{display:inline-flex;align-items:center;gap:8px;vertical-align:middle}
+img.mini,.badge-d.mini{width:24px;height:24px;flex:none;object-fit:contain}
+.badge-d.mini{font-size:9px;border-width:1px}
+.match .team img{height:auto;object-fit:contain}
+.score-row img{height:44px;object-fit:contain}
+.fixtures .m{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}

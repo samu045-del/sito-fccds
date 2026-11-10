@@ -17,8 +17,8 @@ window.CDS = {
     casa: "CDS F.C.",
     trasferta: "Real Roma Nord",
     inCasa: true,
-    campo: "[Campo di casa da confermare]",
-    linkMappa: ""
+    campo: "Centro Sportivo Dabliu Eur",
+    linkMappa: "https://www.google.com/maps/search/?api=1&query=Centro%20Sportivo%20Dabliu%20Eur%20Roma"
   },
 
   ultimaPartita: {
@@ -30,6 +30,31 @@ window.CDS = {
     golTrasferta: 3,
     esito: "V",
     marcatoriCDS: ["Picci (2)", "Di Leo"]
+  },
+
+  // Campo di casa (usato in home, Il Club e Contatti)
+  campoCasa: {
+    nome: "Centro Sportivo Dabliu Eur",
+    indirizzo: "[Indirizzo da confermare], Roma",
+    linkMappa: "https://www.google.com/maps/search/?api=1&query=Centro%20Sportivo%20Dabliu%20Eur%20Roma"
+  },
+
+  // Loghi avversari: nome squadra esattamente come in calendario/classifica -> file in assets/img/squadre
+  loghi: {
+    "Academy Monti della Tolfa": "academy-monti-della-tolfa.png",
+    "Amatori Allumiere 1983": "amatori-allumiere-1983.png",
+    "Atletico": "atletico.png",
+    "Black Lions": "black-lions.png",
+    "Delta Calcio": "delta-calcio.png",
+    "DLF Youth Academy": "dlf-youth-academy.png",
+    "F.C. Palombara": "fc-palombara.png",
+    "GDZ Campagnano": "gdz-campagnano.png",
+    "Palmarola Club": "palmarola-club.png",
+    "Pol. Pian Due Torri": "pol-pian-due-torri.png",
+    "Pro Calcio Cerveteri": "pro-calcio-cerveteri.png",
+    "Real Roma Nord": "real-roma-nord.png",
+    "Tusker Roma": "tusker-roma.png",
+    "Vigor Mellis": "vigor-mellis.png"
   },
 
   // Trasmettiamo in diretta solo le partite in casa: qui va l'ultima diretta disponibile.
