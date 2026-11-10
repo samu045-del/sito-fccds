@@ -1,5 +1,6 @@
 /* FC CDS — stile del sito */
-@font-face{font-family:"Kalnia";src:url(../fonts/kalnia-500.woff2) format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Playfair Display";src:url(../fonts/playfair-display.woff2) format("woff2");font-weight:400 900;font-style:normal;font-display:swap}
+@font-face{font-family:"Playfair Display";src:url(../fonts/playfair-display-italic.woff2) format("woff2");font-weight:400 900;font-style:italic;font-display:swap}
 @font-face{font-family:"Archivo";src:url(../fonts/archivo-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"Archivo";src:url(../fonts/archivo-latin-600-normal.woff2) format("woff2");font-weight:600;font-display:swap}
 @font-face{font-family:"Archivo";src:url(../fonts/archivo-latin-700-normal.woff2) format("woff2");font-weight:700;font-display:swap}
@@ -8,7 +9,7 @@
 :root{
   --navy:#0B2357; --navy-d:#071739; --red:#E41B1D; --red-l:#FF6B6B; --red-ll:#FF8A8A;
   --ground:#F4F5F8; --line:#E2E5EC; --muted:#4A5672; --muted-l:#8A93A8; --soft:#DDE3F0; --soft2:#C9D1E3;
-  --display:"Kalnia",Georgia,serif; --body:"Archivo",system-ui,-apple-system,sans-serif;
+  --display:"Playfair Display",Georgia,serif; --body:"Archivo",system-ui,-apple-system,sans-serif;
   --wrap:1280px; --pad:clamp(16px,4vw,40px);
 }
 *{box-sizing:border-box}
@@ -115,7 +116,8 @@ html,body{overflow-x:hidden}
 .page-hero{background:var(--navy) url(../img/monogramma.png) no-repeat right var(--pad) center/auto 62%;color:#fff}
 .page-hero .wrap{padding-top:56px;padding-bottom:48px;display:flex;flex-direction:column;gap:12px}
 .page-hero .kicker{color:var(--red-ll)}
-.page-hero h1{font-family:var(--display);font-weight:500;font-size:clamp(52px,8vw,100px);line-height:.95}
+.page-hero h1{font-family:var(--display);font-weight:500;font-size:clamp(46px,6.4vw,88px);line-height:1}
+@media (min-width:761px){.page-hero .wrap{padding-right:calc(var(--pad) + 240px)}}
 .page-hero p{margin:0;max-width:540px;font-size:18px;color:var(--soft)}
 .stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
 .stats div{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);padding:10px 16px;display:flex;align-items:baseline;gap:10px}
@@ -244,3 +246,7 @@ img.mini,.badge-d.mini{width:24px;height:24px;flex:none;object-fit:contain}
 .match .team img{height:auto;object-fit:contain}
 .score-row img{height:44px;object-fit:contain}
 .fixtures .m{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+
+/* Titoli e numeri in Playfair Display: grassetto e cifre allineate */
+.display,.brand span,.match .team,.match .vs,.score-row .s,.countdown b,.fixtures .g,.fixtures .r .sc,td.pos,td.pt,.top b,.top strong,.bars .v,.stats b,.role-h .count,.role-h h2,.fig .band strong,.fig .back .nm,.fig .back .st b,.page-hero h1,.block h2,.partner h2,.sec-h h2{font-weight:700;font-variant-numeric:lining-nums tabular-nums;font-feature-settings:"lnum" 1}
+.page-hero h1,.match .team{letter-spacing:-.01em}
