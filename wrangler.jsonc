@@ -1,0 +1,9 @@
+{
+  // Configurazione Cloudflare: pubblica il sito statico così com'è
+  "name": "fccds",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./",
+    "not_found_handling": "single-page-application"
+  }
+}
