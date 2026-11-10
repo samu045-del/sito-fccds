@@ -31,7 +31,15 @@
   var f = $('#site-footer');
   if (f) {
     f.className = 'site-footer';
-    f.innerHTML = '<div class="wrap"><img src="assets/img/monogramma.png" alt="Monogramma CDS"><nav aria-label="Link legali"><a href="#">Privacy policy</a><a href="#">Cookie policy</a></nav><span>© ' + new Date().getFullYear() + ' FC CDS</span></div>';
+    var ig = '<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>';
+    var tk = '<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.8A4.3 4.3 0 0 1 15.5 3h-3.2v12.6a2.6 2.6 0 1 1-2.6-2.6c.3 0 .5 0 .8.1V9.8a5.9 5.9 0 0 0-.8-.1 5.8 5.8 0 1 0 5.8 5.8V9.2a7.4 7.4 0 0 0 4.3 1.4V7.4a4.3 4.3 0 0 1-3.2-1.6z"/></svg>';
+    var C2 = D.contatti || {};
+    var social = (C2.instagram ? '<a class="soc" href="' + esc(C2.instagram) + '" target="_blank" rel="noopener" aria-label="FC CDS su Instagram">' + ig + '</a>' : '') +
+      (C2.tiktok ? '<a class="soc" href="' + esc(C2.tiktok) + '" target="_blank" rel="noopener" aria-label="FC CDS su TikTok">' + tk + '</a>' : '');
+    var L = D.societa || {};
+    var legal = L.ragioneSociale ? '<p class="legal">' + esc(L.ragioneSociale) + ' · Sede legale: ' + esc(L.sede) + ' · C.F. ' + esc(L.codiceFiscale) + ' · P.IVA ' + esc(L.partitaIva) + ' · PEC: <a href="mailto:' + esc(L.pec) + '">' + esc(L.pec) + '</a></p>' : '';
+    f.innerHTML = '<div class="wrap"><img src="assets/img/monogramma.png" alt="Monogramma CDS"><div class="social">' + social + '</div><nav aria-label="Link legali"><a href="#">Privacy policy</a><a href="#">Cookie policy</a></nav><span>© ' + new Date().getFullYear() + ' FC CDS</span></div>' +
+      (legal ? '<div class="wrap legal-wrap">' + legal + '</div>' : '');
   }
 
   /* ---------- Countdown ---------- */

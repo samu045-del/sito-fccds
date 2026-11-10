@@ -165,10 +165,19 @@ window.CDS = {
     { nome: "Gaetano", cognome: "Carnevale", ruolo: "[Ruolo]", foto: "carnevale-gaetano.jpg" }
   ],
 
+  // Dati societari (obbligatori nel footer)
+  societa: {
+    ragioneSociale: "ASD Football Club Corriere dello Sport",
+    sede: "Via Tuscolana 979, 00174 Roma (RM)",
+    codiceFiscale: "96663240586",
+    partitaIva: "18624201002",
+    pec: "asd.footballclub_cds@pec.it"
+  },
+
   contatti: {
     email: "[email del club]",
-    instagram: "",
-    tiktok: "",
+    instagram: "https://www.instagram.com/footballclubcds/",
+    tiktok: "https://www.tiktok.com/@footballclubcds",
     youtube: "https://www.youtube.com/@FootballClub-CDS"
   },
 
