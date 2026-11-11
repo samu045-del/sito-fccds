@@ -73,6 +73,16 @@ window.CDS = {
 
   riepilogo: { posizione: "4°", punti: 9, vittorie: "3/3", golFatti: 14, golSubiti: 7 },
 
+  // Nomi corti usati solo nel calendario (in classifica resta il nome completo)
+  nomiBrevi: {
+    "Amatori Allumiere 1983": "Allumiere",
+    "Pro Calcio Cerveteri": "Cerveteri",
+    "Academy Monti della Tolfa": "Monti della Tolfa",
+    "DLF Youth Academy": "DLF Youth",
+    "Pol. Pian Due Torri": "Pian Due Torri",
+    "Palmarola Club": "Palmarola"
+  },
+
   // video: ID YouTube della diretta (solo partite in casa giocate): l'icona porta al video
   calendario: [
     { g: "G1", data: "Dom 18 ott", casa: "", trasferta: "", stato: "riposo" },
