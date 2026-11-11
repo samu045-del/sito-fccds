@@ -191,7 +191,8 @@
   /* ---------- PARTNER ---------- */
   if (page === 'partner' && D.partner) {
     $('#partners').innerHTML = D.partner.map(function (p) {
-      return '<article class="partner"><div class="logo">[LOGO ' + esc(p.nome.toUpperCase()) + ']</div><span>' + esc(p.ruolo.toUpperCase()) + '</span><h2>' + esc(p.nome) + '</h2>' + (p.link ? '<a class="btn btn-w" style="border-color:var(--navy);align-self:flex-start" href="' + esc(p.link) + '" target="_blank" rel="noopener sponsored">Visita ' + esc(p.nome) + '</a>' : '') + '</article>';
+      var lg = p.logo ? '<div class="logo has-img"><img src="assets/img/partner/' + esc(p.logo) + '" alt="Logo ' + esc(p.nome) + '" width="400" height="400" loading="lazy"></div>' : '<div class="logo">[LOGO ' + esc(p.nome.toUpperCase()) + ']</div>';
+      return '<article class="partner">' + lg + '<span>' + esc(p.ruolo.toUpperCase()) + '</span><h2>' + esc(p.nome) + '</h2></article>';
     }).join('') + '<article class="partner" style="background:var(--navy);color:#fff"><div class="logo" style="border-color:rgba(255,255,255,.4);color:var(--soft)">IL TUO LOGO QUI</div><span style="color:var(--red-ll)">DIVENTA PARTNER</span><h2>Mettici la faccia (e il logo)</h2><a class="btn btn-w" href="contatti.html" style="align-self:flex-start">Scrivici</a></article>';
   }
 
