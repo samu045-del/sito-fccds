@@ -29,7 +29,7 @@ window.CDS = {
     golCasa: 1,
     golTrasferta: 3,
     esito: "V",
-    marcatoriCDS: ["Picci (2)", "Di Leo"]
+    marcatoriCDS: ["Picci (2)", "Dileo"]
   },
 
   // Campo di casa (usato in home, Il Club e Contatti)
@@ -73,10 +73,11 @@ window.CDS = {
 
   riepilogo: { posizione: "4°", punti: 9, vittorie: "3/3", golFatti: 14, golSubiti: 7 },
 
+  // video: ID YouTube della diretta (solo partite in casa giocate): l'icona porta al video
   calendario: [
     { g: "G1", data: "Dom 18 ott", casa: "", trasferta: "", stato: "riposo" },
     { g: "G2", data: "Dom 25 ott · 15:00", casa: "Amatori Allumiere 1983", trasferta: "FC CDS", ris: "3-4", stato: "V" },
-    { g: "G3", data: "Sab 31 ott · 18:00", casa: "FC CDS", trasferta: "Palmarola Club", ris: "7-3", stato: "V" },
+    { g: "G3", data: "Sab 31 ott · 18:00", casa: "FC CDS", trasferta: "Palmarola Club", ris: "7-3", stato: "V", video: "M16NWXeht60" },
     { g: "G4", data: "Dom 8 nov · 15:00", casa: "Atletico", trasferta: "FC CDS", ris: "1-3", stato: "V" },
     { g: "G5", data: "Sab 14 nov · 18:00", casa: "FC CDS", trasferta: "Real Roma Nord", stato: "prossima" },
     { g: "G6", data: "Dom 22 nov · 15:00", casa: "Pol. Pian Due Torri", trasferta: "FC CDS" },
@@ -112,7 +113,7 @@ window.CDS = {
 
   marcatori: [
     { nome: "Picci", gol: 11, nota: "2 su rigore" },
-    { nome: "Di Leo", gol: 1 },
+    { nome: "Dileo", gol: 1 },
     { nome: "Mercurio", gol: 1 },
     { nome: "Mollo", gol: 1 }
   ],
@@ -149,7 +150,7 @@ window.CDS = {
     { nome: "Francesco", cognome: "Torzulli", ruolo: "CEN", foto: "torzulli-francesco.jpg" },
 
     { nome: "Lorenzo", cognome: "Di Fabrizio", ruolo: "ATT", foto: "" },
-    { nome: "Gianmarco", cognome: "Di Leo", ruolo: "ATT", foto: "dileo-gianmarco.jpg", gol: 1 },
+    { nome: "Gianmarco", cognome: "Dileo", ruolo: "ATT", foto: "dileo-gianmarco.jpg", gol: 1 },
     { nome: "Francesco", cognome: "Mercurio", ruolo: "ATT", foto: "mercurio-francesco.jpg", gol: 1, assist: 1 },
     { nome: "Antonio Giulio", cognome: "Picci", ruolo: "ATT", foto: "", gol: 11 },
     { nome: "Gianluca", cognome: "Raho", ruolo: "ATT", foto: "raho-gianluca.jpg" },

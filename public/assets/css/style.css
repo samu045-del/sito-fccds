@@ -270,3 +270,8 @@ img.mini,.badge-d.mini{width:24px;height:24px;flex:none;object-fit:contain}
 .site-footer .legal-wrap{padding-top:0;border-top:1px solid rgba(255,255,255,.1)}
 .site-footer .legal{margin:16px 0 0;font-size:12px;line-height:1.6;color:var(--soft2)}
 .site-footer .legal a{color:var(--soft2)}
+
+/* Icona YouTube nelle partite in casa */
+.fixtures .yt-mini{display:inline-flex;padding:4px;margin:-4px 0;line-height:0;border-radius:6px}
+.fixtures .yt-mini:hover{background:rgba(0,0,0,.06)}
+.fixtures li.next .yt-mini:hover{background:rgba(255,255,255,.12)}

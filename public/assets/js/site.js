@@ -165,6 +165,7 @@
       var cls = m.stato === 'prossima' ? 'next' : (m.ris ? 'win' : '');
       var tag = m.stato === 'prossima' ? '<span class="tag tag-v">PROSSIMA</span>' : (m.ris ? '<span class="sc">' + esc(m.ris) + '</span><span class="tag ' + ({ V: 'tag-win', N: 'tag-n', P: 'tag-p' }[m.stato] || 'tag-n') + '">' + esc(m.stato) + '</span>' : '<span class="tag tag-h">' + (isCDS(m.casa) ? 'CASA' : 'FUORI') + '</span>');
       if (m.ris && m.stato !== 'V') cls = '';
+      if (isCDS(m.casa) && D.youtube) tag = '<a class="yt-mini" href="' + esc(m.video ? 'https://www.youtube.com/watch?v=' + m.video : (m.ris ? D.youtube.canale : D.youtube.diretta)) + '" target="_blank" rel="noopener" aria-label="' + (m.ris ? 'Rivedi su YouTube' : 'Diretta su YouTube') + '" title="' + (m.ris ? 'Rivedi su YouTube' : 'Diretta su YouTube') + '"><svg viewBox="0 0 28 20" width="24" height="17" aria-hidden="true"><rect width="28" height="20" rx="5" fill="#FF0000"/><path d="M11 5.5v9l8-4.5z" fill="#fff"/></svg></a>' + tag;
       var t = function (x) { return '<span class="tm">' + logo(x, 'mini') + (isCDS(x) ? '<b>' + esc(x) + '</b>' : esc(x)) + '</span>'; };
       return '<li class="' + cls + '"><span class="g">' + m.g + '</span><span class="d">' + esc(m.data) + '</span><span class="m">' + t(m.casa) + ' <span style="opacity:.55">–</span> ' + t(m.trasferta) + '</span><span class="r">' + tag + '</span></li>';
     }).join('');
