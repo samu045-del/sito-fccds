@@ -71,7 +71,7 @@ window.CDS = {
     diretta: "https://www.youtube.com/@FootballClub-CDS/live"
   },
 
-  riepilogo: { posizione: "4°", punti: 9, vittorie: "3/3", golFatti: 14 },
+  riepilogo: { posizione: "4°", punti: 9, vittorie: "3/3", golFatti: 14, golSubiti: 7 },
 
   calendario: [
     { g: "G1", data: "Dom 18 ott", casa: "", trasferta: "", stato: "riposo" },
@@ -80,14 +80,14 @@ window.CDS = {
     { g: "G4", data: "Dom 8 nov · 15:00", casa: "Atletico", trasferta: "FC CDS", ris: "1-3", stato: "V" },
     { g: "G5", data: "Sab 14 nov · 18:00", casa: "FC CDS", trasferta: "Real Roma Nord", stato: "prossima" },
     { g: "G6", data: "Dom 22 nov · 15:00", casa: "Pol. Pian Due Torri", trasferta: "FC CDS" },
-    { g: "G7", data: "Dom 29 nov · 15:00", casa: "FC CDS", trasferta: "Pro Calcio Cerveteri" },
+    { g: "G7", data: "Sab 28 nov · 18:00", casa: "FC CDS", trasferta: "Pro Calcio Cerveteri" },
     { g: "G8", data: "Dom 6 dic · 15:00", casa: "F.C. Palombara", trasferta: "FC CDS" },
     { g: "G9", data: "Dom 13 dic · 15:00", casa: "Black Lions", trasferta: "FC CDS" },
-    { g: "G10", data: "Dom 20 dic · 15:00", casa: "FC CDS", trasferta: "Academy Monti della Tolfa" },
+    { g: "G10", data: "Sab 19 dic · 18:00", casa: "FC CDS", trasferta: "Academy Monti della Tolfa" },
     { g: "G11", data: "Dom 10 gen · 15:00", casa: "Delta Calcio", trasferta: "FC CDS" },
-    { g: "G12", data: "Dom 17 gen · 15:00", casa: "FC CDS", trasferta: "Vigor Mellis" },
+    { g: "G12", data: "Sab 16 gen · 18:00", casa: "FC CDS", trasferta: "Vigor Mellis" },
     { g: "G13", data: "Dom 24 gen · 15:00", casa: "GDZ Campagnano", trasferta: "FC CDS" },
-    { g: "G14", data: "Dom 31 gen · 15:00", casa: "FC CDS", trasferta: "DLF Youth Academy" },
+    { g: "G14", data: "Sab 30 gen · 18:00", casa: "FC CDS", trasferta: "DLF Youth Academy" },
     { g: "G15", data: "Dom 7 feb · 15:00", casa: "Tusker Roma", trasferta: "FC CDS" }
   ],
 
@@ -118,8 +118,10 @@ window.CDS = {
   ],
   assist: [
     { nome: "Sanseverino", n: 2 },
-    { nome: "De Dominicis", n: 1 },
-    { nome: "Mercurio", n: 1 }
+    { nome: "Mercurio", n: 1 },
+    { nome: "Mollo", n: 1 },
+    { nome: "Carice", n: 1 },
+    { nome: "Ferro", n: 1 }
   ],
 
   // ruolo: POR, DIF, CEN, ATT, "?" = da confermare. foto: nome file in assets/img/giocatori (vuoto = foto in arrivo)
@@ -129,14 +131,15 @@ window.CDS = {
 
     { nome: "Alessio", cognome: "Biraschi", ruolo: "DIF", foto: "biraschi-alessio.jpg" },
     { nome: "Marco", cognome: "Capoccetti", ruolo: "DIF", foto: "capoccetti-marco.jpg" },
-    { nome: "Andrea", cognome: "De Dominicis", ruolo: "DIF", foto: "dedominicis-andrea.jpg", assist: 1 },
+    { nome: "Andrea", cognome: "De Dominicis", ruolo: "DIF", foto: "dedominicis-andrea.jpg" },
     { nome: "Piergiorgio", cognome: "Ferri", ruolo: "DIF", foto: "ferri-piergiorgio.jpg" },
     { nome: "Joseph", cognome: "Meyome", ruolo: "DIF", foto: "meyome-joseph.jpg" },
-    { nome: "Simone", cognome: "Mollo", ruolo: "DIF", foto: "mollo-simone.jpg", gol: 1 },
+    { nome: "Simone", cognome: "Mollo", ruolo: "DIF", foto: "mollo-simone.jpg", gol: 1, assist: 1 },
     { nome: "Andrea", cognome: "Politi", ruolo: "DIF", foto: "politi-andrea.jpg" },
     { nome: "Damiano", cognome: "Saccares", ruolo: "DIF", foto: "" },
+    { nome: "Alessio", cognome: "Sanfilippo", ruolo: "DIF", foto: "sanfilippo-alessio.jpg" },
 
-    { nome: "Matteo", cognome: "Carice", ruolo: "CEN", foto: "carice-matteo.jpg" },
+    { nome: "Matteo", cognome: "Carice", ruolo: "CEN", foto: "carice-matteo.jpg", assist: 1 },
     { nome: "Daniele", cognome: "Cicivelli", ruolo: "CEN", foto: "cicivelli-daniele.jpg" },
     { nome: "Federico", cognome: "Mangione", ruolo: "CEN", foto: "" },
     { nome: "Damiano", cognome: "Perugini", ruolo: "CEN", foto: "perugini-damiano.jpg" },
@@ -151,10 +154,7 @@ window.CDS = {
     { nome: "Antonio Giulio", cognome: "Picci", ruolo: "ATT", foto: "", gol: 11 },
     { nome: "Gianluca", cognome: "Raho", ruolo: "ATT", foto: "raho-gianluca.jpg" },
     { nome: "Dario", cognome: "Stragapede", ruolo: "ATT", foto: "stragapede-dario.jpg" },
-
-    // In foto con la maglia ma non ancora in rosa su Tuttocampo: ruolo da confermare
-    { nome: "Andrea", cognome: "Ferro", ruolo: "?", foto: "ferro-andrea.jpg" },
-    { nome: "Alessio", cognome: "Sanfilippo", ruolo: "?", foto: "sanfilippo-alessio.jpg" }
+    { nome: "Andrea", cognome: "Ferro", ruolo: "ATT", foto: "ferro-andrea.jpg", assist: 1 }
   ],
 
   staff: [
@@ -162,7 +162,7 @@ window.CDS = {
     { nome: "Emanuele", cognome: "Costanzi", ruolo: "[Ruolo]", foto: "costanzi-emanuele.jpg" },
     { nome: "Davide", cognome: "Fazio", ruolo: "[Ruolo]", foto: "fazio-davide.jpg" },
     { nome: "Simone", cognome: "[Cognome]", ruolo: "[Ruolo]", foto: "simone.jpg" },
-    { nome: "Gaetano", cognome: "Carnevale", ruolo: "[Ruolo]", foto: "carnevale-gaetano.jpg" }
+    { nome: "Gaetano", cognome: "Carnevale", ruolo: "Creator", foto: "carnevale-gaetano.jpg" }
   ],
 
   // Dati societari (obbligatori nel footer)

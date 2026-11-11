@@ -159,7 +159,7 @@
   /* ---------- CALENDARIO & CLASSIFICA ---------- */
   if (page === 'calendario') {
     var R = D.riepilogo || {};
-    $('#stats').innerHTML = '<div><b>' + esc(R.posizione) + '</b><span>POSIZIONE</span></div><div><b>' + esc(R.punti) + '</b><span>PUNTI</span></div><div><b>' + esc(R.vittorie) + '</b><span>VITTORIE</span></div><div><b>' + esc(R.golFatti) + '</b><span>GOL FATTI</span></div>';
+    $('#stats').innerHTML = '<div><b>' + esc(R.posizione) + '</b><span>POSIZIONE</span></div><div><b>' + esc(R.punti) + '</b><span>PUNTI</span></div><div><b>' + esc(R.vittorie) + '</b><span>VITTORIE</span></div><div><b>' + esc(R.golFatti) + '</b><span>GOL FATTI</span></div>' + (R.golSubiti != null ? '<div><b>' + esc(R.golSubiti) + '</b><span>GOL SUBITI</span></div>' : '');
     $('#fixtures').innerHTML = D.calendario.map(function (m) {
       if (m.stato === 'riposo') return '<li class="rest"><span class="g">' + m.g + '</span><span class="d">' + esc(m.data) + '</span><span class="m">Turno di riposo</span><span class="r"><span class="tag tag-n">RIPOSO</span></span></li>';
       var cls = m.stato === 'prossima' ? 'next' : (m.ris ? 'win' : '');
@@ -171,7 +171,7 @@
     $('#cla-h').textContent = 'DOPO LA ' + D.giornataClassifica + 'ª GIORNATA';
     $('#table tbody').innerHTML = D.classifica.map(function (r, i) {
       var me = isCDS(r[0]);
-      return '<tr' + (me ? ' class="us"' : '') + '><td class="pos t-l">' + (i + 1) + '</td><th scope="row" class="t-l"><span class="tm">' + logo(r[0], 'mini') + esc(r[0]) + '</span></th><td class="pt">' + r[1] + '</td><td>' + r[2] + '</td><td class="hide-s">' + r[3] + '</td><td class="hide-s">' + r[4] + '</td><td class="hide-s">' + r[5] + '</td><td class="hide-s">' + r[6] + '</td><td class="hide-s">' + r[7] + '</td><td>' + (r[8] > 0 ? '+' : '') + r[8] + '</td></tr>';
+      return '<tr' + (me ? ' class="us"' : '') + '><td class="pos t-l">' + (i + 1) + '</td><th scope="row" class="t-l"><span class="tm">' + logo(r[0], 'mini') + esc(r[0]) + '</span></th><td class="pt">' + r[1] + '</td><td>' + r[2] + '</td><td class="hide-s">' + r[3] + '</td><td class="hide-s">' + r[4] + '</td><td class="hide-s">' + r[5] + '</td><td>' + r[6] + '</td><td>' + r[7] + '</td><td>' + (r[8] > 0 ? '+' : '') + r[8] + '</td></tr>';
     }).join('');
     $('#src').textContent = 'Fonte: Tuttocampo, aggiornata al ' + D.aggiornato + '.';
     var top = D.marcatori[0], tot = R.golFatti || 1;

@@ -121,10 +121,8 @@ html,body{overflow-x:hidden}
 .page-hero p{margin:0;max-width:540px;font-size:18px;color:var(--soft)}
 .stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
 .stats div{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);padding:10px 16px;display:flex;align-items:baseline;gap:10px}
-.stats div:last-child{background:var(--red);border-color:var(--red)}
 .stats b{font-family:var(--display);font-weight:500;font-size:32px;line-height:1}
 .stats span{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--soft)}
-.stats div:last-child span{color:#fff}
 @media (max-width:760px){.page-hero{background-image:none}.page-hero p{font-size:16px}}
 
 /* Filter chips / tabs */
