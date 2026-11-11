@@ -290,3 +290,10 @@ img.mini,.badge-d.mini{width:24px;height:24px;flex:none;object-fit:contain}
 .partner .logo.has-img img{position:absolute;top:14%;left:50%;height:72%;width:auto;transform:translateX(-50%)}
 .partner h2{font-size:22px}
 .partner:not([style]) h2{white-space:nowrap}
+
+/* Compleanno nelle figurine */
+.fig .back .bday{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--soft);text-transform:uppercase}
+.fig .back .bday svg{color:var(--red-ll);flex:none}
+.fig .auguri{position:absolute;top:10px;left:10px;display:inline-flex;align-items:center;gap:5px;background:#fff;color:var(--red);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:5px 8px;box-shadow:0 2px 6px rgba(7,23,57,.25)}
+.fig.is-bday{box-shadow:0 0 0 3px var(--red),0 2px 6px rgba(7,23,57,.18)}
+@media (max-width:560px){.fig .back .bday{font-size:10px;gap:4px}.fig .back .bday svg{width:12px;height:12px}.fig .auguri{top:8px;left:8px;font-size:9px;padding:4px 6px}.fig .auguri svg{width:11px;height:11px}}

@@ -122,15 +122,27 @@
       ['?', 'Ruolo da confermare', 'In foto con noi, presto in rosa.']
     ];
     var turnIcon = '<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E41B1D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>';
+    var MESI = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+    var cake = '<svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V12a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v9"/><path d="M4 16c1.3 0 1.3-1 2.7-1s1.3 1 2.6 1 1.4-1 2.7-1 1.3 1 2.6 1 1.4-1 2.7-1 1.4 1 2.7 1"/><path d="M2 21h20"/><path d="M12 11V7"/><path d="M12 4.5c.6-.6 1-1.2 1-1.8a1 1 0 0 0-2 0c0 .6.4 1.2 1 1.8z" fill="currentColor"/></svg>';
+    var oggi = new Date();
+    var bday = function (p) {
+      var m = /^(\d{1,2})[-\/](\d{1,2})/.exec(p.compleanno || '');
+      if (!m) return null;
+      var g = +m[1], mm = +m[2];
+      return { testo: g + ' ' + MESI[mm - 1], oggi: oggi.getDate() === g && oggi.getMonth() + 1 === mm };
+    };
     var card = function (p, dir, isStaff) {
+      var B = bday(p);
+      var bLine = B ? '<span class="bday">' + cake + esc(B.testo) + '</span>' : '';
+      var auguri = B && B.oggi ? '<span class="auguri">' + cake + 'Auguri!</span>' : '';
       var front = p.foto ? '<img class="ph" src="assets/img/' + dir + '/' + esc(p.foto) + '" alt="' + esc(p.nome + ' ' + p.cognome) + '" loading="lazy" width="640" height="800">'
         : '<div class="nophoto"><img src="assets/img/monogramma.png" alt="">FOTO IN ARRIVO</div>';
       var badge = isStaff ? '' : (p.ruolo && p.ruolo !== '?' ? '<span class="role">' + esc(p.ruolo) + '</span>' : '');
       var sub = isStaff ? esc(p.ruolo) : esc(p.nome);
-      var back = isStaff ? '<img src="assets/img/monogramma.png" alt=""><span class="nm">' + esc(p.nome + ' ' + p.cognome) + '</span><span style="font-size:13px;color:var(--soft2)">' + esc(p.ruolo) + '</span>'
-        : '<img src="assets/img/monogramma.png" alt=""><span class="nm">' + esc(p.cognome) + '</span><div class="st"><div><b>' + (p.gol || 0) + '</b><span>GOL</span></div><div><b>' + (p.assist || 0) + '</b><span>ASSIST</span></div></div>';
-      return '<button type="button" class="fig" aria-label="Gira la figurina di ' + esc(p.nome + ' ' + p.cognome) + '">' +
-        '<div class="face front">' + front + badge + '<div class="band"><div style="min-width:0"><small>' + sub + '</small><strong>' + esc(p.cognome) + '</strong></div>' + turnIcon + '</div></div>' +
+      var back = isStaff ? '<img src="assets/img/monogramma.png" alt=""><span class="nm">' + esc(p.nome + ' ' + p.cognome) + '</span><span style="font-size:13px;color:var(--soft2)">' + esc(p.ruolo) + '</span>' + bLine
+        : '<img src="assets/img/monogramma.png" alt=""><span class="nm">' + esc(p.cognome) + '</span><div class="st"><div><b>' + (p.gol || 0) + '</b><span>GOL</span></div><div><b>' + (p.assist || 0) + '</b><span>ASSIST</span></div></div>' + bLine;
+      return '<button type="button" class="fig' + (B && B.oggi ? ' is-bday' : '') + '" aria-label="Gira la figurina di ' + esc(p.nome + ' ' + p.cognome) + '">' +
+        '<div class="face front">' + front + badge + auguri + '<div class="band"><div style="min-width:0"><small>' + sub + '</small><strong>' + esc(p.cognome) + '</strong></div>' + turnIcon + '</div></div>' +
         '<div class="face back">' + back + '</div></button>';
     };
     var html = '';

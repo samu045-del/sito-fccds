@@ -136,6 +136,7 @@ window.CDS = {
   ],
 
   // ruolo: POR, DIF, CEN, ATT, "?" = da confermare. foto: nome file in assets/img/giocatori (vuoto = foto in arrivo)
+  // compleanno: "GG-MM" (senza anno). Il giorno del compleanno la figurina mostra "Auguri!"
   rosa: [
     { nome: "Elia", cognome: "Manuri", ruolo: "POR", foto: "manuri-elia.jpg" },
     { nome: "Pierangelo", cognome: "Paniccia", ruolo: "POR", foto: "paniccia-pierangelo.jpg" },
@@ -144,7 +145,7 @@ window.CDS = {
     { nome: "Marco", cognome: "Capoccetti", ruolo: "DIF", foto: "capoccetti-marco.jpg" },
     { nome: "Andrea", cognome: "De Dominicis", ruolo: "DIF", foto: "dedominicis-andrea.jpg" },
     { nome: "Piergiorgio", cognome: "Ferri", ruolo: "DIF", foto: "ferri-piergiorgio.jpg" },
-    { nome: "Joseph", cognome: "Meyome", ruolo: "DIF", foto: "meyome-joseph.jpg" },
+    { nome: "Joseph", cognome: "Meiyome", ruolo: "DIF", foto: "meyome-joseph.jpg" },
     { nome: "Simone", cognome: "Mollo", ruolo: "DIF", foto: "mollo-simone.jpg", gol: 1, assist: 1 },
     { nome: "Andrea", cognome: "Politi", ruolo: "DIF", foto: "politi-andrea.jpg" },
     { nome: "Damiano", cognome: "Saccares", ruolo: "DIF", foto: "" },
