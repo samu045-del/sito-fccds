@@ -15,7 +15,7 @@
 <link rel="icon" href="assets/img/favicon-48.png" sizes="48x48">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/playfair-display.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css?v=202611121758">
+<link rel="stylesheet" href="assets/css/style.css?v=202611121804">
 <style>
   html,body{height:100%}
   body{display:flex;flex-direction:column;background:var(--navy-d);overscroll-behavior:none}
@@ -93,7 +93,7 @@
   </div>
 </main>
 <script src="data/dati.js"></script>
-<script src="assets/js/site.js?v=202611121758"></script>
+<script src="assets/js/site.js?v=202611121804"></script>
 <script>
 (function () {
   var cv = document.getElementById('game'), ctx = cv.getContext('2d'), wrap = document.getElementById('game-wrap');
@@ -122,6 +122,10 @@
   function sx(l, d) { var s = (sc(d) - sc(1)) / (1 - sc(1)); return W / 2 + l * laneW() * (0.12 + 0.88 * s); }
   function size(d) { var s = (sc(d) - sc(1)) / (1 - sc(1)); return 0.12 + 0.88 * s; }
 
+  var IMG = {}, barCycle = 0;
+  [['club', 'assets/img/logo-160.png'], ['eplay', 'assets/img/partner/eplay24.png'], ['cds', 'assets/img/partner/cds.png']].forEach(function (a) {
+    var im = new Image(); im.onload = function () { if (W) { buildStands(); if (state !== 'play' && state !== 'pen') render(); } }; im.src = a[1]; IMG[a[0]] = im;
+  });
   // --- tribuna: disegnata una volta sola (pubblico + striscioni), le bandiere si muovono a ogni frame
   function rng(seed) { return function () { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }; }
   function barH() { return Math.max(18, horizon() * 0.16); }
@@ -147,19 +151,32 @@
       }
     }
     // balaustra con striscioni
-    barCv.width = Math.ceil(W * DPR); barCv.height = Math.ceil(bh * DPR);
-    var b = barCx; b.setTransform(DPR, 0, 0, DPR, 0, 0);
-    b.fillStyle = '#e9edf5'; b.fillRect(0, 0, W, bh);
-    var labels = [['FORZA CDS', '#fff', C.red], ['FC CDS', C.red, '#fff'], ['CDS', C.navy, '#fff'], ['ROSSOBLÙ', '#fff', C.navy]];
-    b.font = '800 ' + Math.round(bh * 0.52) + 'px Archivo, sans-serif'; b.textAlign = 'center'; b.textBaseline = 'middle';
-    var x0 = -(R() * 40), i = 0;
-    while (x0 < W) {
-      var L = labels[i % labels.length], w = b.measureText(L[0]).width + bh * 1.4;
+    var b = barCx;
+    b.font = '800 ' + Math.round(bh * 0.46) + 'px Archivo, sans-serif';
+    // [testo, sfondo, colore testo, logo]
+    var labels = [['FORZA CDS', '#fff', C.red, null], ['FC CDS', C.navy, '#fff', IMG.club], ['EPLAY24.SPORT', '#0D365F', '#fff', IMG.eplay], ['CORRIERE DELLO SPORT', '#fff', C.red, IMG.cds]];
+    var fs = Math.round(bh * 0.46), ls = bh * 0.78, pad = bh * 0.6;
+    var widths = labels.map(function (L) { var hl = L[3] && L[3].complete && L[3].naturalWidth; return pad * 2 + b.measureText(L[0]).width + (hl ? ls + bh * 0.3 : 0); });
+    barCycle = widths.reduce(function (a, c) { return a + c; }, 0);
+    var stripW = barCycle * (Math.ceil(W / barCycle) + 1);
+    barCv.width = Math.ceil(stripW * DPR); barCv.height = Math.ceil(bh * DPR);
+    b.setTransform(DPR, 0, 0, DPR, 0, 0);
+    b.fillStyle = '#e9edf5'; b.fillRect(0, 0, stripW, bh);
+    b.font = '800 ' + fs + 'px Archivo, sans-serif'; b.textAlign = 'left'; b.textBaseline = 'middle';
+    var x0 = 0, i = 0;
+    while (x0 < stripW) {
+      var L = labels[i % labels.length], hasLogo = L[3] && L[3].complete && L[3].naturalWidth;
+      var w = widths[i % labels.length];
       b.fillStyle = L[1]; b.fillRect(x0 + 2, 2, w - 4, bh - 4);
-      b.fillStyle = L[2]; b.fillText(L[0], x0 + w / 2, bh / 2 + 1);
+      var cx = x0 + pad;
+      if (hasLogo) {
+        b.fillStyle = '#fff'; b.beginPath(); b.arc(cx + ls / 2, bh / 2, ls / 2 + 2, 0, Math.PI * 2); b.fill();
+        b.drawImage(L[3], cx, (bh - ls) / 2, ls, ls); cx += ls + bh * 0.3;
+      }
+      b.fillStyle = L[2]; b.fillText(L[0], cx, bh / 2 + 1);
       x0 += w; i++;
     }
-    b.fillStyle = 'rgba(0,0,0,.25)'; b.fillRect(0, bh - 2, W, 2);
+    b.fillStyle = 'rgba(0,0,0,.25)'; b.fillRect(0, bh - 2, stripW, 2);
   }
   function drawFlag(px, top, bottom, fw, phase) {
     ctx.strokeStyle = '#d7dbe4'; ctx.lineWidth = 2;
@@ -183,7 +200,8 @@
       var lift = cheering ? Math.sin(elapsed * 10 + f) * h * 0.03 : 0;
       drawFlag(px, h * 0.08 + lift + bounce, h * 0.6, fw, f * 1.7);
     }
-    ctx.drawImage(barCv, 0, h - bh, W, bh);
+    var off = barCycle ? (elapsed * 45) % barCycle : 0;
+    ctx.drawImage(barCv, -off, h - bh, barCv.width / DPR, bh);
   }
 
   function drawField() {
@@ -242,33 +260,48 @@
     ctx.fillStyle = '#2b1d14'; ctx.beginPath(); ctx.arc(x, ty - 15 * s, 13 * s, Math.PI, 0); ctx.fill(); ctx.fillRect(x - 13 * s, ty - 15 * s, 26 * s, 6 * s);
   }
 
-  // avversario in scivolata: arriva dalla corsia accanto e taglia sulla tua
-  function slideX(o) {
-    var p = Math.max(0, Math.min(1, (0.5 - o.d) / 0.36));
-    p = p * p * (3 - 2 * p);
-    return o.from + (o.l - o.from) * p;
-  }
+  // avversario in scivolata: attraversa il campo in diagonale e taglia sulla corsia segnata con "!"
+  function slideX(o) { return o.l - o.dir * 4.2 * (o.d - 0.03); }
   function drawSlide(o) {
-    var s = size(o.d) * Math.min(H / 700, 1.2), lx = slideX(o), x = sx(lx, o.d), y = sy(o.d);
-    var dir = o.l > o.from ? 1 : -1, moving = lx !== o.l && o.d < 0.5;
-    if (o.d < 0.62 && o.d > 0.06) {
-      var wx = sx(o.l, 0.04), wy = sy(0.04) - 150 * size(0.04) * Math.min(H / 700, 1.2);
-      var pulse = 1 + Math.sin(elapsed * 20) * 0.08, r = 16 * pulse;
+    var lx = slideX(o);
+    if (Math.abs(lx) > 2.4) return;
+    var s = size(o.d) * Math.min(H / 700, 1.2) * 1.25, x = sx(lx, o.d), y = sy(o.d), dir = o.dir;
+    if (o.d < 0.6 && o.d > 0.05) {
+      var ws = size(0.04) * Math.min(H / 700, 1.2), wx = sx(o.l, 0.04), wy = sy(0.04) - 150 * ws;
+      var r = 16 * (1 + Math.sin(elapsed * 20) * 0.08);
       ctx.fillStyle = C.red; ctx.beginPath(); ctx.arc(wx, wy, r, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.font = '800 22px Archivo, sans-serif'; ctx.fillText('!', wx, wy + 8);
     }
-    shadow(x, y, 46 * s);
-    if (moving) { ctx.fillStyle = 'rgba(210,190,150,.55)'; for (var k = 1; k < 4; k++) { ctx.beginPath(); ctx.arc(x - dir * (30 + k * 14) * s, y - 6 * s - k * 3 * s, (8 - k) * s, 0, Math.PI * 2); ctx.fill(); } }
-    ctx.save(); ctx.translate(x, y - 14 * s); ctx.scale(dir, 1);
-    ctx.fillStyle = '#111'; ctx.fillRect(4 * s, -6 * s, 46 * s, 9 * s);              // gamba tesa
-    ctx.fillStyle = '#F5C400'; ctx.fillRect(44 * s, -8 * s, 10 * s, 12 * s);          // calzettone
-    ctx.fillStyle = '#111'; ctx.fillRect(-6 * s, -2 * s, 30 * s, 8 * s);              // gamba piegata
-    ctx.fillStyle = '#111'; ctx.fillRect(-18 * s, -14 * s, 24 * s, 16 * s);           // pantaloncini
-    ctx.save(); ctx.rotate(-0.5);
-    ctx.fillStyle = '#F5C400'; ctx.fillRect(-58 * s, -24 * s, 42 * s, 26 * s);       // maglia
-    ctx.fillStyle = '#111'; ctx.fillRect(-40 * s, -24 * s, 6 * s, 26 * s);
-    ctx.fillStyle = C.skin; ctx.beginPath(); ctx.arc(-68 * s, -12 * s, 11 * s, 0, Math.PI * 2); ctx.fill();
-    ctx.restore(); ctx.restore();
+    // scia d'erba e zolle
+    ctx.fillStyle = 'rgba(30,95,40,.55)';
+    ctx.beginPath(); ctx.ellipse(x - dir * 60 * s, y - 2 * s, 70 * s, 7 * s, 0, 0, Math.PI * 2); ctx.fill();
+    for (var k = 0; k < 6; k++) {
+      var ph = (elapsed * 3 + k / 6) % 1;
+      ctx.fillStyle = k % 2 ? 'rgba(120,90,50,.8)' : 'rgba(70,160,80,.9)';
+      ctx.fillRect(x - dir * (20 + ph * 70) * s, y - (8 + Math.sin(ph * Math.PI) * 26 + k * 2) * s, 5 * s, 5 * s);
+    }
+    shadow(x, y, 50 * s);
+    ctx.save(); ctx.translate(x, y); ctx.scale(dir, 1);
+    var kick = Math.sin(elapsed * 18) * 2 * s;
+    // gamba d'appoggio piegata
+    ctx.fillStyle = '#111'; ctx.save(); ctx.translate(-4 * s, -14 * s); ctx.rotate(0.5); ctx.fillRect(0, -4 * s, 26 * s, 8 * s); ctx.restore();
+    ctx.fillStyle = '#F5C400'; ctx.fillRect(14 * s, -8 * s, 12 * s, 8 * s);
+    // gamba tesa in avanti, piede a martello
+    ctx.fillStyle = '#111'; ctx.save(); ctx.translate(0, -16 * s); ctx.rotate(0.12); ctx.fillRect(0, -5 * s, 52 * s, 10 * s);
+    ctx.fillStyle = '#F5C400'; ctx.fillRect(36 * s, -6 * s, 14 * s, 12 * s);
+    ctx.fillStyle = '#fff'; ctx.fillRect(50 * s + kick, -9 * s, 9 * s, 16 * s); ctx.restore();
+    // pantaloncini e busto all'indietro
+    ctx.fillStyle = '#111'; ctx.fillRect(-20 * s, -26 * s, 24 * s, 16 * s);
+    ctx.save(); ctx.translate(-12 * s, -22 * s); ctx.rotate(-1.05);
+    ctx.fillStyle = '#F5C400'; ctx.fillRect(-4 * s, -14 * s, 46 * s, 28 * s);
+    ctx.fillStyle = '#111'; ctx.fillRect(14 * s, -14 * s, 6 * s, 28 * s);
+    ctx.fillStyle = C.skin; ctx.beginPath(); ctx.arc(54 * s, 0, 12 * s, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(56 * s, -3 * s, 12 * s, Math.PI * 0.9, Math.PI * 1.9); ctx.fill();
+    ctx.restore();
+    // braccio d'appoggio a terra e braccio alzato
+    ctx.fillStyle = '#F5C400'; ctx.save(); ctx.translate(-26 * s, -38 * s); ctx.rotate(1.9); ctx.fillRect(0, -4 * s, 30 * s, 8 * s); ctx.restore();
+    ctx.save(); ctx.translate(-8 * s, -52 * s); ctx.rotate(-2.5); ctx.fillRect(0, -4 * s, 26 * s, 8 * s); ctx.fillStyle = C.skin; ctx.fillRect(26 * s, -4 * s, 8 * s, 8 * s); ctx.restore();
+    ctx.restore();
   }
 
   function drawItem(o) {
@@ -315,7 +348,7 @@
         var r = Math.random(), k = r < 0.45 ? 'def' : (r < 0.7 ? 'cone' : 'slide');
         if (k === 'slide' && elapsed < 4) k = 'cone';
         var o = { k: k, l: l, d: 1, hitDone: false };
-        if (k === 'slide') o.from = l === 0 ? (Math.random() < 0.5 ? -1 : 1) : l * 2;
+        if (k === 'slide') o.dir = l === 0 ? (Math.random() < 0.5 ? -1 : 1) : -l;
         items.push(o);
       } else if (Math.random() < 0.75) {
         var isStar = Math.random() < 0.06 && elapsed > 8;
@@ -348,8 +381,9 @@
     var airborne = jumpT >= 0 && jumpT > 0.12 && jumpT < 0.88;
     for (var i = items.length - 1; i >= 0; i--) {
       var o = items[i]; o.d -= dt * spd * 0.9;
-      if (o.d < -0.05) { items.splice(i, 1); continue; }
-      if (o.d < 0.06 && o.d > -0.02 && Math.abs(o.l - laneX) < 0.45) {
+      if (o.d < (o.k === 'slide' ? -0.4 : -0.05)) { items.splice(i, 1); continue; }
+      var ox = o.k === 'slide' ? slideX(o) : o.l;
+      if (o.d < 0.06 && o.d > -0.02 && Math.abs(ox - laneX) < 0.45) {
         if (o.k === 'ball') {
           var before = multiplier(); combo++;
           score += 10 * multiplier() * (elapsed < bonusUntil ? 2 : 1);
@@ -450,7 +484,7 @@
     drawField();
     if (state === 'pen') drawPen();
     else {
-      items.slice().sort(function (a, b) { return b.d - a.d; }).forEach(function (o) { if (o.d <= 1.2 && o.d >= 0) drawItem(o); });
+      items.slice().sort(function (a, b) { return b.d - a.d; }).forEach(function (o) { if (o.d <= 1.2 && (o.d >= 0 || (o.k === 'slide' && o.d > -0.12))) drawItem(o); });
       drawPlayer();
     }
     var left = Math.max(0, Math.ceil(DURATION - elapsed));
