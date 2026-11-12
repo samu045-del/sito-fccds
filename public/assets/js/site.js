@@ -123,7 +123,7 @@
     ];
     var turnIcon = '<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E41B1D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>';
     var MESI = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
-    var cake = '<svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V12a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v9"/><path d="M4 16c1.3 0 1.3-1 2.7-1s1.3 1 2.6 1 1.4-1 2.7-1 1.3 1 2.6 1 1.4-1 2.7-1 1.4 1 2.7 1"/><path d="M2 21h20"/><path d="M12 11V7"/><path d="M12 4.5c.6-.6 1-1.2 1-1.8a1 1 0 0 0-2 0c0 .6.4 1.2 1 1.8z" fill="currentColor"/></svg>';
+    var cake = '<svg class="cake" aria-hidden="true" width="22" height="22" viewBox="0 0 32 32"><path d="M10 9.5c-.9-1-.9-2 0-3.2.9 1.2.9 2.2 0 3.2z" fill="#FFC531"/><path d="M16 8c-.9-1-.9-2 0-3.2.9 1.2.9 2.2 0 3.2z" fill="#FFC531"/><path d="M22 9.5c-.9-1-.9-2 0-3.2.9 1.2.9 2.2 0 3.2z" fill="#FFC531"/><rect x="9.2" y="10" width="1.6" height="5" rx=".8" fill="#fff"/><rect x="15.2" y="8.5" width="1.6" height="6.5" rx=".8" fill="#fff"/><rect x="21.2" y="10" width="1.6" height="5" rx=".8" fill="#fff"/><rect x="5" y="15" width="22" height="13" rx="3" fill="#fff"/><path d="M5 18.5c0-2 1.3-3.5 3-3.5h16c1.7 0 3 1.5 3 3.5v.8c-1.2 1.4-2.6 1.4-3.7 0-1.1 1.4-2.5 1.4-3.7 0-1.1 1.4-2.5 1.4-3.6 0-1.1 1.4-2.5 1.4-3.7 0-1.1 1.4-2.5 1.4-3.6 0-1.1 1.4-2.5 1.4-3.7 0z" fill="#E41B1D"/><rect x="5" y="23" width="22" height="1.6" fill="#E41B1D" opacity=".25"/><circle cx="10" cy="26" r=".9" fill="#0B2357"/><circle cx="16" cy="25.6" r=".9" fill="#FFC531"/><circle cx="22" cy="26" r=".9" fill="#0B2357"/><rect x="3" y="27.6" width="26" height="1.8" rx=".9" fill="#fff" opacity=".5"/></svg>';
     var oggi = new Date();
     var bday = function (p) {
       var m = /^(\d{1,2})[-\/](\d{1,2})/.exec(p.compleanno || '');
@@ -133,8 +133,8 @@
     };
     var card = function (p, dir, isStaff) {
       var B = bday(p);
-      var bLine = B ? '<span class="bday">' + cake + esc(B.testo) + '</span>' : '';
-      var auguri = B && B.oggi ? '<span class="auguri">' + cake + 'Auguri!</span>' : '';
+      var bLine = B ? '<span class="bday">' + cake + '<span><small>Compleanno</small>' + esc(B.testo) + '</span></span>' : '';
+      var auguri = B && B.oggi ? '<span class="auguri">' + cake + 'Tanti auguri!</span>' : '';
       var front = p.foto ? '<img class="ph" src="assets/img/' + dir + '/' + esc(p.foto) + '" alt="' + esc(p.nome + ' ' + p.cognome) + '" loading="lazy" width="640" height="800">'
         : '<div class="nophoto"><img src="assets/img/monogramma.png" alt="">FOTO IN ARRIVO</div>';
       var badge = isStaff ? '' : (p.ruolo && p.ruolo !== '?' ? '<span class="role">' + esc(p.ruolo) + '</span>' : '');

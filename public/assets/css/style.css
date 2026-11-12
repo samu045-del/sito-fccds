@@ -297,3 +297,13 @@ img.mini,.badge-d.mini{width:24px;height:24px;flex:none;object-fit:contain}
 .fig .auguri{position:absolute;top:10px;left:10px;display:inline-flex;align-items:center;gap:5px;background:#fff;color:var(--red);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:5px 8px;box-shadow:0 2px 6px rgba(7,23,57,.25)}
 .fig.is-bday{box-shadow:0 0 0 3px var(--red),0 2px 6px rgba(7,23,57,.18)}
 @media (max-width:560px){.fig .back .bday{font-size:10px;gap:4px}.fig .back .bday svg{width:12px;height:12px}.fig .auguri{top:8px;left:8px;font-size:9px;padding:4px 6px}.fig .auguri svg{width:11px;height:11px}}
+
+/* Compleanno v2: torta festosa, testo esplicito */
+.fig .back .bday{gap:8px;text-align:left;color:#fff;letter-spacing:.04em;background:rgba(255,255,255,.08);padding:6px 10px 6px 8px;border-radius:999px}
+.fig .back .bday small{display:block;font-size:9px;letter-spacing:.14em;color:var(--soft2);line-height:1.2}
+.fig .back .bday svg{color:inherit;width:22px;height:22px}
+.fig .auguri{background:var(--red);color:#fff;border-radius:999px;padding:4px 10px 4px 6px}
+.fig .auguri svg{width:18px;height:18px}
+@media (max-width:560px){.fig .back .bday{gap:6px;padding:4px 8px 4px 6px}.fig .back .bday svg{width:18px;height:18px}.fig .back .bday small{font-size:8px}.fig .auguri{padding:3px 8px 3px 4px}.fig .auguri svg{width:14px;height:14px}}
+.fig .back .bday svg{width:28px;height:28px}
+@media (max-width:560px){.fig .back .bday svg{width:22px;height:22px}}
