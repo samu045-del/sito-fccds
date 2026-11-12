@@ -261,7 +261,7 @@
   }
 
   // avversario in scivolata: attraversa il campo in diagonale e taglia sulla corsia segnata con "!"
-  function slideX(o) { return o.l - o.dir * 4.2 * (o.d - 0.03); }
+  function slideX(o) { return o.l - o.dir * 7 * (o.d - 0.03); }
   function drawSlide(o) {
     var lx = slideX(o);
     if (Math.abs(lx) > 2.4) return;
@@ -341,7 +341,7 @@
   // --- spawn: una fila alla volta, mai tutte e tre le corsie bloccate
   function spawnRow() {
     var lanes = [-1, 0, 1].sort(function () { return Math.random() - .5; });
-    var nObs = Math.random() < 0.35 + Math.min(elapsed / DURATION, 1) * 0.35 ? 2 : 1;
+    var nObs = Math.random() < 0.45 + Math.min(elapsed / DURATION, 1) * 0.35 ? 2 : 1;
     for (var i = 0; i < 3; i++) {
       var l = lanes[i];
       if (i < nObs) {
@@ -369,7 +369,7 @@
   function update(dt) {
     elapsed += dt;
     var p = Math.min(elapsed / DURATION, 1);
-    speed = elapsed < HALF ? 0.55 + p * 0.3 : 0.8 + (p - 0.5) * 0.4;
+    speed = elapsed < HALF ? 0.62 + p * 0.3 : 0.9 + (p - 0.5) * 0.44;
     if (!halfShown && elapsed >= HALF) { halfShown = true; banner('Secondo tempo!<small>SI ACCELERA</small>', 1600); cheer(1.6); }
     var spd = elapsed < hitUntil ? speed * 0.5 : speed;
     scroll = (scroll + dt * spd * 14) % 1000;
@@ -377,7 +377,7 @@
     laneX += (lane - laneX) * Math.min(1, dt * 16);
     if (jumpT >= 0) { jumpT += dt * 1.6; if (jumpT > 1) jumpT = -1; }
     spawnAcc += dt * spd;
-    if (spawnAcc > 0.62) { spawnAcc = 0; spawnRow(); }
+    if (spawnAcc > 0.56) { spawnAcc = 0; spawnRow(); }
     var airborne = jumpT >= 0 && jumpT > 0.12 && jumpT < 0.88;
     for (var i = items.length - 1; i >= 0; i--) {
       var o = items[i]; o.d -= dt * spd * 0.9;
