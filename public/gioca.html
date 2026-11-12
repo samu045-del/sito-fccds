@@ -47,6 +47,10 @@
   .banner.on{opacity:1;transform:scale(1)}
   .banner.low{top:auto;bottom:24%}
   .banner small{display:block;font-family:Archivo,sans-serif;font-size:13px;font-weight:800;letter-spacing:.16em;text-shadow:none;margin-top:10px;color:var(--soft)}
+  .card{display:inline-block;width:.5em;height:.7em;border-radius:.06em;margin-right:.22em;vertical-align:-.04em;transform:rotate(-10deg);box-shadow:0 2px 6px rgba(0,0,0,.35)}
+  .card.y{background:#F5C400}.card.r{background:#E41B1D;outline:2px solid #fff}
+  .hud .yc{display:none;width:18px;height:25px;background:#F5C400;border-radius:2px;transform:rotate(-10deg);margin:10px auto 0;box-shadow:0 2px 6px rgba(0,0,0,.35)}
+  .hud .yc.on{display:block}
   .flash{position:absolute;inset:0;background:rgba(228,27,29,.35);opacity:0;pointer-events:none;transition:opacity .25s}
 </style>
 </head>
@@ -56,7 +60,7 @@
   <canvas id="game" aria-label="Gioco: 60 secondi con la CDS"></canvas>
   <div class="flash" id="flash"></div>
   <div class="hud" aria-live="off">
-    <div class="box time" id="hud-time"><b id="t">60</b><span>SECONDI</span></div>
+    <div><div class="box time" id="hud-time"><b id="t">60</b><span>SECONDI</span></div><div class="yc" id="yc" title="Ammonito"></div></div>
     <div class="box"><b id="s">0</b><span>PUNTI</span></div>
   </div>
   <div class="mult" id="mult">BONUS PICCI ×2</div>
@@ -68,6 +72,7 @@
       <img src="assets/img/logo-160.png" alt="Stemma FC CDS">
       <h1>60 secondi con la CDS</h1>
       <p>Corri verso la porta, schiva i difensori, raccogli più palloni che puoi. Allo scadere, rigore.</p>
+      <p style="font-size:13px"><span class="card y"></span>Al primo ostacolo preso sei ammonito, al secondo <span class="card r" style="outline-width:1px"></span>espulso.</p>
       <div class="how">
         <div><b>← →</b>Scorri o tocca a sinistra/destra per cambiare corsia</div>
         <div><b>↑</b>Salta coni e scivolate: scorri in su o premi spazio</div>
@@ -110,7 +115,7 @@
   var C = { navy: '#0B2357', navyD: '#071739', red: '#E41B1D', white: '#fff', grass1: '#2E8B3E', grass2: '#287A36', line: 'rgba(255,255,255,.85)', skin: '#E7B28A', gold: '#F5B800' };
   var DURATION = 60, HALF = 30, state = 'start', last = 0, elapsed = 0, score = 0, bonusUntil = 0, hitUntil = 0, cheerUntil = 0;
   var lane = 0, laneX = 0, jumpT = -1, runPhase = 0, scroll = 0, speed = 0.55, spawnAcc = 0, items = [];
-  var combo = 0, halfShown = false, pen = null;
+  var combo = 0, halfShown = false, pen = null, cards = 0, sentOffAt = 0, ycEl = document.getElementById('yc');
   var best = 0; try { best = +localStorage.getItem('cds-best') || 0; } catch (e) {}
 
   // --- prospettiva: d=0 vicino, d=1 orizzonte
@@ -393,14 +398,28 @@
         else if (o.k === 'star') { bonusUntil = elapsed + 5; cheer(1.5); items.splice(i, 1); }
         else if (!o.hitDone) {
           var jumpable = o.k !== 'def';
-          if (!(jumpable && airborne)) {
-            o.hitDone = true; hitUntil = elapsed + 1; score = Math.max(0, score - 20); combo = 0;
+          if (!(jumpable && airborne) && elapsed >= hitUntil) {
+            o.hitDone = true; cards++; combo = 0;
             flash.style.opacity = 1; setTimeout(function () { flash.style.opacity = 0; }, 160);
+            if (cards === 1) {
+              hitUntil = elapsed + 1.2; score = Math.max(0, score - 20);
+              ycEl.classList.add('on');
+              banner('<span class="card y"></span>Ammonito!<small>AL PROSSIMO SEI FUORI</small>', 1400);
+            } else { sendOff(); return; }
           }
         }
       }
     }
     if (elapsed >= DURATION) startPen();
+  }
+
+  // --- secondo giallo: rosso e triplice fischio
+  function sendOff() {
+    state = 'over'; sentOffAt = Math.ceil(elapsed); hitUntil = elapsed + 5;
+    render();
+    banner('<span class="card r"></span>Espulso!<small>SECONDO GIALLO</small>', 1300);
+    setTimeout(function () { if (state === 'over') banner('Triplice fischio!<small>FINE PARTITA</small>', 1300); }, 1400);
+    setTimeout(function () { if (state === 'over') end(); }, 2800);
   }
 
   // --- rigore finale
@@ -506,7 +525,7 @@
 
   function start() {
     state = 'play'; elapsed = 0; score = 0; items = []; lane = 0; laneX = 0; jumpT = -1; bonusUntil = 0; hitUntil = 0; cheerUntil = 0; spawnAcc = 0.4;
-    combo = 0; halfShown = false; pen = null; bannerEl.classList.remove('on');
+    combo = 0; halfShown = false; pen = null; cards = 0; sentOffAt = 0; ycEl.classList.remove('on'); bannerEl.classList.remove('on');
     document.getElementById('start').hidden = true; document.getElementById('end').hidden = true;
     last = performance.now(); requestAnimationFrame(loop);
   }
@@ -518,12 +537,12 @@
   }
   function end() {
     if (state === 'end') return;
-    state = 'end'; render();
+    state = 'end'; bannerEl.classList.remove('on'); render();
     var r = rankFor(score), isBest = score > best;
     if (isBest) { best = score; try { localStorage.setItem('cds-best', best); } catch (e) {} }
     document.getElementById('rank').textContent = r[0];
     document.getElementById('final').textContent = score;
-    var rig = pen ? (pen.goal ? 'Rigore segnato. ' : 'Rigore parato. ') : '';
+    var rig = sentOffAt ? 'Espulso al ' + sentOffAt + '° secondo. ' : (pen ? (pen.goal ? 'Rigore segnato. ' : 'Rigore parato. ') : '');
     document.getElementById('end-msg').textContent = rig + r[1];
     document.getElementById('best-end').textContent = isBest ? 'Nuovo record personale!' : 'Il tuo record: ' + best;
     var url = location.origin + location.pathname;
