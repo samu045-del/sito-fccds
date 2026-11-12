@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>60 secondi con la CDS – Gioca – FC CDS</title>
-<meta name="description" content="Il gioco del FC CDS: 60 secondi, tre corsie, schiva i difensori e raccogli palloni.">
-<meta property="og:title" content="60 secondi con la CDS – il gioco del FC CDS">
+<title>90 secondi con la CDS – Gioca – FC CDS</title>
+<meta name="description" content="Il gioco del FC CDS: 90 secondi, tre corsie, schiva i difensori e raccogli palloni.">
+<meta property="og:title" content="90 secondi con la CDS – il gioco del FC CDS">
 <meta property="og:description" content="Schiva i difensori, raccogli palloni, batti il mio record.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://fccds.samu045.workers.dev/assets/img/og-fccds.jpg">
@@ -57,10 +57,10 @@
 <body data-page="gioca">
 <header id="site-header"></header>
 <main id="game-wrap">
-  <canvas id="game" aria-label="Gioco: 60 secondi con la CDS"></canvas>
+  <canvas id="game" aria-label="Gioco: 90 secondi con la CDS"></canvas>
   <div class="flash" id="flash"></div>
   <div class="hud" aria-live="off">
-    <div><div class="box time" id="hud-time"><b id="t">60</b><span>SECONDI</span></div><div class="yc" id="yc" title="Ammonito"></div></div>
+    <div><div class="box time" id="hud-time"><b id="t">90</b><span>SECONDI</span></div><div class="yc" id="yc" title="Ammonito"></div></div>
     <div class="box"><b id="s">0</b><span>PUNTI</span></div>
   </div>
   <div class="mult" id="mult">BONUS PICCI ×2</div>
@@ -70,7 +70,7 @@
   <div class="overlay" id="start">
     <div class="panel">
       <img src="assets/img/logo-160.png" alt="Stemma FC CDS">
-      <h1>60 secondi con la CDS</h1>
+      <h1>90 secondi con la CDS</h1>
       <p>Corri verso la porta, schiva i difensori, raccogli più palloni che puoi. Allo scadere, rigore.</p>
       <p style="font-size:13px"><span class="card y"></span>Al primo ostacolo preso sei ammonito, al secondo <span class="card r" style="outline-width:1px"></span>espulso.</p>
       <div class="how">
@@ -87,7 +87,7 @@
     <div class="panel">
       <span class="title" id="rank">TITOLARE</span>
       <div class="big" id="final">0</div>
-      <p id="end-msg">punti in 60 secondi</p>
+      <p id="end-msg">punti in 90 secondi</p>
       <span class="best" id="best-end"></span>
       <div class="btns">
         <button class="btn btn-w" type="button" id="again">Rigioca</button>
@@ -113,7 +113,7 @@
   }
 
   var C = { navy: '#0B2357', navyD: '#071739', red: '#E41B1D', white: '#fff', grass1: '#2E8B3E', grass2: '#287A36', line: 'rgba(255,255,255,.85)', skin: '#E7B28A', gold: '#F5B800' };
-  var DURATION = 60, HALF = 30, state = 'start', last = 0, elapsed = 0, score = 0, bonusUntil = 0, hitUntil = 0, cheerUntil = 0;
+  var DURATION = 90, HALF = 45, state = 'start', last = 0, elapsed = 0, score = 0, bonusUntil = 0, hitUntil = 0, cheerUntil = 0;
   var lane = 0, laneX = 0, jumpT = -1, runPhase = 0, scroll = 0, speed = 0.55, spawnAcc = 0, items = [];
   var combo = 0, halfShown = false, pen = null, cards = 0, sentOffAt = 0, ycEl = document.getElementById('yc');
   var best = 0; try { best = +localStorage.getItem('cds-best') || 0; } catch (e) {}
@@ -530,9 +530,9 @@
     last = performance.now(); requestAnimationFrame(loop);
   }
   function rankFor(p) {
-    if (p < 250) return ['PANCHINARO', 'Il mister ti guarda. Riprova.'];
-    if (p < 600) return ['TITOLARE', 'Domenica giochi dall\'inizio.'];
-    if (p < 1000) return ['BOMBER', 'Picci inizia a preoccuparsi.'];
+    if (p < 375) return ['PANCHINARO', 'Il mister ti guarda. Riprova.'];
+    if (p < 900) return ['TITOLARE', 'Domenica giochi dall\'inizio.'];
+    if (p < 1500) return ['BOMBER', 'Picci inizia a preoccuparsi.'];
     return ['CAPOCANNONIERE', 'Lo stemma sul petto, il nome nei titoli.'];
   }
   function end() {
@@ -546,7 +546,7 @@
     document.getElementById('end-msg').textContent = rig + r[1];
     document.getElementById('best-end').textContent = isBest ? 'Nuovo record personale!' : 'Il tuo record: ' + best;
     var url = location.origin + location.pathname;
-    document.getElementById('share').href = 'https://wa.me/?text=' + encodeURIComponent('Ho fatto ' + score + ' punti a "60 secondi con la CDS" (' + r[0].toLowerCase() + '). Mi batti? ' + url);
+    document.getElementById('share').href = 'https://wa.me/?text=' + encodeURIComponent('Ho fatto ' + score + ' punti a "90 secondi con la CDS" (' + r[0].toLowerCase() + '). Mi batti? ' + url);
     document.getElementById('end').hidden = false;
   }
   document.getElementById('best-start').textContent = best ? 'Il tuo record: ' + best : '';
