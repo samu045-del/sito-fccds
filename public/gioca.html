@@ -15,7 +15,7 @@
 <link rel="icon" href="assets/img/favicon-48.png" sizes="48x48">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/playfair-display.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css?v=202611121742">
+<link rel="stylesheet" href="assets/css/style.css?v=202611121758">
 <style>
   html,body{height:100%}
   body{display:flex;flex-direction:column;background:var(--navy-d);overscroll-behavior:none}
@@ -41,6 +41,12 @@
   .panel .btns{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .panel .btn{width:100%}
   .best{font-size:13px;color:var(--soft2)}
+  .combo{position:absolute;top:12px;left:50%;transform:translateX(-50%);background:#fff;color:var(--red);font-weight:800;font-size:12px;letter-spacing:.12em;padding:6px 10px;display:none;pointer-events:none;white-space:nowrap}
+  .combo b{font-family:var(--display);font-size:18px;letter-spacing:0;margin-left:4px}
+  .banner{position:absolute;left:0;right:0;top:38%;text-align:center;pointer-events:none;color:#fff;font-family:var(--display);font-weight:700;font-size:clamp(34px,9vw,64px);line-height:1;text-shadow:0 3px 0 var(--red),0 6px 18px rgba(0,0,0,.5);opacity:0;transform:scale(.6);transition:opacity .2s,transform .25s}
+  .banner.on{opacity:1;transform:scale(1)}
+  .banner.low{top:auto;bottom:24%}
+  .banner small{display:block;font-family:Archivo,sans-serif;font-size:13px;font-weight:800;letter-spacing:.16em;text-shadow:none;margin-top:10px;color:var(--soft)}
   .flash{position:absolute;inset:0;background:rgba(228,27,29,.35);opacity:0;pointer-events:none;transition:opacity .25s}
 </style>
 </head>
@@ -54,16 +60,18 @@
     <div class="box"><b id="s">0</b><span>PUNTI</span></div>
   </div>
   <div class="mult" id="mult">BONUS PICCI ×2</div>
+  <div class="combo" id="combo">COMBO<b id="combo-n">×2</b></div>
+  <div class="banner" id="banner"></div>
 
   <div class="overlay" id="start">
     <div class="panel">
       <img src="assets/img/logo-160.png" alt="Stemma FC CDS">
       <h1>60 secondi con la CDS</h1>
-      <p>Corri verso la porta, schiva i difensori, raccogli più palloni che puoi.</p>
+      <p>Corri verso la porta, schiva i difensori, raccogli più palloni che puoi. Allo scadere, rigore.</p>
       <div class="how">
         <div><b>← →</b>Scorri o tocca a sinistra/destra per cambiare corsia</div>
-        <div><b>↑</b>Scorri in su o premi spazio per saltare</div>
-        <div><b>⚽</b>Palloni +10<br>Stella = ×2 per 5 secondi</div>
+        <div><b>↑</b>Salta coni e scivolate: scorri in su o premi spazio</div>
+        <div><b>⚽</b>Palloni +10, combo fino a ×3<br>Stella = ×2</div>
       </div>
       <button class="btn btn-w" type="button" id="play">Gioca</button>
       <span class="best" id="best-start"></span>
@@ -85,21 +93,24 @@
   </div>
 </main>
 <script src="data/dati.js"></script>
-<script src="assets/js/site.js?v=202611121742"></script>
+<script src="assets/js/site.js?v=202611121758"></script>
 <script>
 (function () {
   var cv = document.getElementById('game'), ctx = cv.getContext('2d'), wrap = document.getElementById('game-wrap');
   var W = 0, H = 0, DPR = 1;
+  var crowdCv = document.createElement('canvas'), crowdCx = crowdCv.getContext('2d');
+  var barCv = document.createElement('canvas'), barCx = barCv.getContext('2d');
   function resize() {
     DPR = Math.min(window.devicePixelRatio || 1, 2);
     W = wrap.clientWidth; H = wrap.clientHeight;
     cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    buildStands();
   }
-  window.addEventListener('resize', resize); resize();
 
   var C = { navy: '#0B2357', navyD: '#071739', red: '#E41B1D', white: '#fff', grass1: '#2E8B3E', grass2: '#287A36', line: 'rgba(255,255,255,.85)', skin: '#E7B28A', gold: '#F5B800' };
-  var DURATION = 60, state = 'start', t0 = 0, last = 0, elapsed = 0, score = 0, bonusUntil = 0, hitUntil = 0;
+  var DURATION = 60, HALF = 30, state = 'start', last = 0, elapsed = 0, score = 0, bonusUntil = 0, hitUntil = 0, cheerUntil = 0;
   var lane = 0, laneX = 0, jumpT = -1, runPhase = 0, scroll = 0, speed = 0.55, spawnAcc = 0, items = [];
+  var combo = 0, halfShown = false, pen = null;
   var best = 0; try { best = +localStorage.getItem('cds-best') || 0; } catch (e) {}
 
   // --- prospettiva: d=0 vicino, d=1 orizzonte
@@ -111,33 +122,87 @@
   function sx(l, d) { var s = (sc(d) - sc(1)) / (1 - sc(1)); return W / 2 + l * laneW() * (0.12 + 0.88 * s); }
   function size(d) { var s = (sc(d) - sc(1)) / (1 - sc(1)); return 0.12 + 0.88 * s; }
 
+  // --- tribuna: disegnata una volta sola (pubblico + striscioni), le bandiere si muovono a ogni frame
+  function rng(seed) { return function () { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }; }
+  function barH() { return Math.max(18, horizon() * 0.16); }
+  function buildStands() {
+    var h = horizon(), bh = barH(), R = rng(42);
+    crowdCv.width = Math.ceil(W * DPR); crowdCv.height = Math.ceil(h * DPR);
+    var c = crowdCx; c.setTransform(DPR, 0, 0, DPR, 0, 0);
+    var bg = c.createLinearGradient(0, 0, 0, h); bg.addColorStop(0, '#071739'); bg.addColorStop(1, '#13306b');
+    c.fillStyle = bg; c.fillRect(0, 0, W, h);
+    var shirts = [C.red, C.red, '#1d4ea8', C.navy, '#fff', '#fff', '#2b2b2b'], skins = ['#E7B28A', '#C98E62', '#F1C7A3', '#8D5B3C'];
+    var top = h * 0.14, bottom = h - bh * 0.6, rows = 6, rh = (bottom - top) / rows;
+    for (var r = 0; r < rows; r++) {
+      var y = top + r * rh, k = 0.65 + 0.35 * (r / (rows - 1)), hr = Math.max(3, rh * 0.28 * k), step = hr * 2.5;
+      c.fillStyle = r % 2 ? '#0f2858' : '#122f66'; c.fillRect(0, y + rh * 0.55, W, rh * 0.45);
+      for (var x = (r % 2) * step / 2; x < W + step; x += step) {
+        if (R() < 0.08) continue;
+        var px = x + (R() - 0.5) * step * 0.3, py = y + rh * 0.45 + (R() - 0.5) * 2;
+        c.fillStyle = shirts[Math.floor(R() * shirts.length)];
+        c.fillRect(px - hr * 1.05, py + hr * 0.6, hr * 2.1, rh * 0.6);
+        if (R() < 0.15) { c.fillRect(px - hr * 1.6, py - hr * 1.4, hr * 0.5, hr * 2.2); c.fillRect(px + hr * 1.1, py - hr * 1.4, hr * 0.5, hr * 2.2); }
+        c.fillStyle = skins[Math.floor(R() * skins.length)]; c.beginPath(); c.arc(px, py, hr, 0, Math.PI * 2); c.fill();
+        if (R() < 0.35) { c.fillStyle = R() < 0.5 ? C.red : C.navy; c.beginPath(); c.arc(px, py - hr * 0.2, hr, Math.PI, 0); c.fill(); }
+      }
+    }
+    // balaustra con striscioni
+    barCv.width = Math.ceil(W * DPR); barCv.height = Math.ceil(bh * DPR);
+    var b = barCx; b.setTransform(DPR, 0, 0, DPR, 0, 0);
+    b.fillStyle = '#e9edf5'; b.fillRect(0, 0, W, bh);
+    var labels = [['FORZA CDS', '#fff', C.red], ['FC CDS', C.red, '#fff'], ['CDS', C.navy, '#fff'], ['ROSSOBLÙ', '#fff', C.navy]];
+    b.font = '800 ' + Math.round(bh * 0.52) + 'px Archivo, sans-serif'; b.textAlign = 'center'; b.textBaseline = 'middle';
+    var x0 = -(R() * 40), i = 0;
+    while (x0 < W) {
+      var L = labels[i % labels.length], w = b.measureText(L[0]).width + bh * 1.4;
+      b.fillStyle = L[1]; b.fillRect(x0 + 2, 2, w - 4, bh - 4);
+      b.fillStyle = L[2]; b.fillText(L[0], x0 + w / 2, bh / 2 + 1);
+      x0 += w; i++;
+    }
+    b.fillStyle = 'rgba(0,0,0,.25)'; b.fillRect(0, bh - 2, W, 2);
+  }
+  function drawFlag(px, top, bottom, fw, phase) {
+    ctx.strokeStyle = '#d7dbe4'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(px, bottom); ctx.lineTo(px, top); ctx.stroke();
+    var fh = fw * 0.62, n = 12, sw = fw / n;
+    for (var i = 0; i < n; i++) {
+      var a = (i / n), off = Math.sin(elapsed * 5 + phase - i * 0.55) * fh * 0.12 * a;
+      ctx.fillStyle = Math.floor(i / 2) % 2 ? C.navy : C.red;
+      ctx.fillRect(px + i * sw - 0.5, top + off, sw + 1, fh);
+    }
+  }
+  function drawStands() {
+    var h = horizon(), bh = barH();
+    var cheering = elapsed < cheerUntil;
+    var bounce = cheering ? -Math.abs(Math.sin(elapsed * 16)) * h * 0.025 : 0;
+    ctx.fillStyle = '#071739'; ctx.fillRect(0, 0, W, h);
+    ctx.drawImage(crowdCv, 0, bounce, W, h);
+    var nf = W < 600 ? 2 : 4, fw = Math.min(70, W * 0.13);
+    for (var f = 0; f < nf; f++) {
+      var px = W * (f + 0.5) / nf + (f % 2 ? 20 : -30);
+      var lift = cheering ? Math.sin(elapsed * 10 + f) * h * 0.03 : 0;
+      drawFlag(px, h * 0.08 + lift + bounce, h * 0.6, fw, f * 1.7);
+    }
+    ctx.drawImage(barCv, 0, h - bh, W, bh);
+  }
+
   function drawField() {
     var h = horizon(), g = ground();
-    var sky = ctx.createLinearGradient(0, 0, 0, h);
-    sky.addColorStop(0, '#071739'); sky.addColorStop(1, '#16397f');
-    ctx.fillStyle = sky; ctx.fillRect(0, 0, W, h);
-    // tribuna stilizzata
-    ctx.fillStyle = '#0d2a63'; ctx.fillRect(0, h - H * 0.07, W, H * 0.07);
-    for (var i = 0; i < W; i += 14) { ctx.fillStyle = (i / 14) % 3 ? 'rgba(255,255,255,.18)' : 'rgba(228,27,29,.45)'; ctx.fillRect(i + 3, h - H * 0.06 + ((i * 7) % 9), 6, 6); }
-    // fari
-    [0.1, 0.9].forEach(function (p) { ctx.fillStyle = '#c9d1e3'; ctx.fillRect(W * p - 2, h - H * 0.2, 4, H * 0.14); ctx.fillStyle = 'rgba(255,255,230,.9)'; ctx.fillRect(W * p - 12, h - H * 0.22, 24, 8); });
-    // erba a strisce che scorrono
+    drawStands();
     ctx.fillStyle = C.grass1; ctx.fillRect(0, h, W, g - h + H);
     var N = 14;
     for (var k = 0; k < N; k++) {
       var d1 = ((k + scroll) % N) / N, d2 = ((k + 0.5 + scroll) % N) / N;
       if (d2 < d1) continue;
-      var y1 = sy(d2), y2 = sy(d1);
-      ctx.fillStyle = C.grass2; ctx.fillRect(0, y1, W, y2 - y1);
+      ctx.fillStyle = C.grass2; ctx.fillRect(0, sy(d2), W, sy(d1) - sy(d2));
     }
-    // linee delle corsie
+    if (state === 'pen') return;
     ctx.strokeStyle = C.line; ctx.lineWidth = 2;
     [-1.5, -0.5, 0.5, 1.5].forEach(function (l, i) {
       ctx.globalAlpha = (i === 0 || i === 3) ? 1 : 0.45;
       ctx.beginPath(); ctx.moveTo(sx(l, 1), sy(1)); ctx.lineTo(sx(l, 0), sy(0)); ctx.stroke();
     });
     ctx.globalAlpha = 1;
-    // porta all'orizzonte
     var gx = W / 2, gy = sy(1), gw = laneW() * 0.9;
     ctx.strokeStyle = '#fff'; ctx.lineWidth = 3;
     ctx.strokeRect(gx - gw / 2, gy - gw * 0.32, gw, gw * 0.32);
@@ -156,32 +221,54 @@
     var hit = elapsed < hitUntil, blink = hit && Math.floor(elapsed * 12) % 2;
     if (blink) return;
     var leg = Math.sin(runPhase) * 14 * s;
-    // gambe
     ctx.fillStyle = C.skin;
     ctx.fillRect(x - 14 * s, y - 52 * s + (jump ? 0 : leg * 0.3), 10 * s, 34 * s - (jump ? 10 * s : leg * 0.6));
     ctx.fillRect(x + 4 * s, y - 52 * s - (jump ? 0 : leg * 0.3), 10 * s, 34 * s + (jump ? -10 * s : leg * 0.6));
-    // calzettoni
     ctx.fillStyle = C.navy;
     ctx.fillRect(x - 15 * s, y - 30 * s + (jump ? -10 * s : leg * 0.1), 12 * s, 16 * s);
     ctx.fillRect(x + 3 * s, y - 30 * s + (jump ? -10 * s : -leg * 0.1), 12 * s, 16 * s);
-    // pantaloncini
     ctx.fillStyle = '#fff'; ctx.fillRect(x - 18 * s, y - 70 * s, 36 * s, 22 * s);
     ctx.fillStyle = C.red; ctx.fillRect(x - 18 * s, y - 52 * s, 36 * s, 4 * s);
-    // maglia a strisce rosso/blu (vista da dietro)
     var tw = 44 * s, th = 52 * s, tx = x - tw / 2, ty = y - 120 * s;
     ctx.fillStyle = C.navy; ctx.fillRect(tx, ty, tw, th);
     ctx.fillStyle = C.red; for (var i = 0; i < 4; i++) ctx.fillRect(tx + 4 * s + i * 11 * s, ty, 5 * s, th);
-    // braccia
     var arm = Math.sin(runPhase + Math.PI) * 10 * s;
     ctx.fillStyle = C.navy; ctx.fillRect(tx - 9 * s, ty + 4 * s + arm * 0.4, 10 * s, 26 * s); ctx.fillRect(tx + tw - 1 * s, ty + 4 * s - arm * 0.4, 10 * s, 26 * s);
     ctx.fillStyle = C.skin; ctx.fillRect(tx - 9 * s, ty + 28 * s + arm * 0.4, 10 * s, 12 * s); ctx.fillRect(tx + tw - 1 * s, ty + 28 * s - arm * 0.4, 10 * s, 12 * s);
-    // numero e scritta
     ctx.fillStyle = '#fff'; ctx.textAlign = 'center';
     ctx.font = '800 ' + Math.round(9 * s) + 'px Archivo, sans-serif'; ctx.fillText('CDS', x, ty + 13 * s);
-    ctx.font = '700 ' + Math.round(24 * s) + 'px "Playfair Display", serif'; ctx.fillText('10', x, ty + 38 * s);
-    // testa (nuca)
+    ctx.font = '700 ' + Math.round(26 * s) + 'px "Playfair Display", serif'; ctx.fillText('9', x, ty + 39 * s);
     ctx.fillStyle = C.skin; ctx.beginPath(); ctx.arc(x, ty - 12 * s, 13 * s, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = '#2b1d14'; ctx.beginPath(); ctx.arc(x, ty - 15 * s, 13 * s, Math.PI, 0); ctx.fill(); ctx.fillRect(x - 13 * s, ty - 15 * s, 26 * s, 6 * s);
+  }
+
+  // avversario in scivolata: arriva dalla corsia accanto e taglia sulla tua
+  function slideX(o) {
+    var p = Math.max(0, Math.min(1, (0.5 - o.d) / 0.36));
+    p = p * p * (3 - 2 * p);
+    return o.from + (o.l - o.from) * p;
+  }
+  function drawSlide(o) {
+    var s = size(o.d) * Math.min(H / 700, 1.2), lx = slideX(o), x = sx(lx, o.d), y = sy(o.d);
+    var dir = o.l > o.from ? 1 : -1, moving = lx !== o.l && o.d < 0.5;
+    if (o.d < 0.62 && o.d > 0.06) {
+      var wx = sx(o.l, 0.04), wy = sy(0.04) - 150 * size(0.04) * Math.min(H / 700, 1.2);
+      var pulse = 1 + Math.sin(elapsed * 20) * 0.08, r = 16 * pulse;
+      ctx.fillStyle = C.red; ctx.beginPath(); ctx.arc(wx, wy, r, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.font = '800 22px Archivo, sans-serif'; ctx.fillText('!', wx, wy + 8);
+    }
+    shadow(x, y, 46 * s);
+    if (moving) { ctx.fillStyle = 'rgba(210,190,150,.55)'; for (var k = 1; k < 4; k++) { ctx.beginPath(); ctx.arc(x - dir * (30 + k * 14) * s, y - 6 * s - k * 3 * s, (8 - k) * s, 0, Math.PI * 2); ctx.fill(); } }
+    ctx.save(); ctx.translate(x, y - 14 * s); ctx.scale(dir, 1);
+    ctx.fillStyle = '#111'; ctx.fillRect(4 * s, -6 * s, 46 * s, 9 * s);              // gamba tesa
+    ctx.fillStyle = '#F5C400'; ctx.fillRect(44 * s, -8 * s, 10 * s, 12 * s);          // calzettone
+    ctx.fillStyle = '#111'; ctx.fillRect(-6 * s, -2 * s, 30 * s, 8 * s);              // gamba piegata
+    ctx.fillStyle = '#111'; ctx.fillRect(-18 * s, -14 * s, 24 * s, 16 * s);           // pantaloncini
+    ctx.save(); ctx.rotate(-0.5);
+    ctx.fillStyle = '#F5C400'; ctx.fillRect(-58 * s, -24 * s, 42 * s, 26 * s);       // maglia
+    ctx.fillStyle = '#111'; ctx.fillRect(-40 * s, -24 * s, 6 * s, 26 * s);
+    ctx.fillStyle = C.skin; ctx.beginPath(); ctx.arc(-68 * s, -12 * s, 11 * s, 0, Math.PI * 2); ctx.fill();
+    ctx.restore(); ctx.restore();
   }
 
   function drawItem(o) {
@@ -201,11 +288,9 @@
       shadow(x, y, 18 * s);
       ctx.fillStyle = '#FF7A00'; ctx.beginPath(); ctx.moveTo(x - 16 * s, y); ctx.lineTo(x + 16 * s, y); ctx.lineTo(x + 4 * s, y - 40 * s); ctx.lineTo(x - 4 * s, y - 40 * s); ctx.closePath(); ctx.fill();
       ctx.fillStyle = '#fff'; ctx.fillRect(x - 10 * s, y - 22 * s, 20 * s, 6 * s);
-    } else if (o.k === 'puddle') {
-      ctx.fillStyle = 'rgba(90,140,200,.75)'; ctx.beginPath(); ctx.ellipse(x, y - 4 * s, 42 * s, 11 * s, 0, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = 'rgba(255,255,255,.35)'; ctx.beginPath(); ctx.ellipse(x - 12 * s, y - 7 * s, 12 * s, 3 * s, 0, 0, Math.PI * 2); ctx.fill();
+    } else if (o.k === 'slide') {
+      drawSlide(o);
     } else if (o.k === 'def') {
-      // difensore avversario (di fronte): maglia gialla e nera, braccia larghe
       shadow(x, y, 30 * s);
       ctx.fillStyle = '#111'; ctx.fillRect(x - 13 * s, y - 50 * s, 10 * s, 50 * s); ctx.fillRect(x + 3 * s, y - 50 * s, 10 * s, 50 * s);
       ctx.fillStyle = '#111'; ctx.fillRect(x - 17 * s, y - 68 * s, 34 * s, 20 * s);
@@ -227,8 +312,11 @@
     for (var i = 0; i < 3; i++) {
       var l = lanes[i];
       if (i < nObs) {
-        var r = Math.random(), k = r < 0.5 ? 'def' : (r < 0.78 ? 'cone' : 'puddle');
-        items.push({ k: k, l: l, d: 1, hitDone: false });
+        var r = Math.random(), k = r < 0.45 ? 'def' : (r < 0.7 ? 'cone' : 'slide');
+        if (k === 'slide' && elapsed < 4) k = 'cone';
+        var o = { k: k, l: l, d: 1, hitDone: false };
+        if (k === 'slide') o.from = l === 0 ? (Math.random() < 0.5 ? -1 : 1) : l * 2;
+        items.push(o);
       } else if (Math.random() < 0.75) {
         var isStar = Math.random() < 0.06 && elapsed > 8;
         items.push({ k: isStar ? 'star' : 'ball', l: l, d: 1 });
@@ -237,10 +325,19 @@
     }
   }
 
-  var flash = document.getElementById('flash');
+  var flash = document.getElementById('flash'), bannerEl = document.getElementById('banner'), bannerT = 0;
+  function banner(html, ms) {
+    bannerEl.innerHTML = html; bannerEl.classList.toggle('low', state === 'pen'); bannerEl.classList.add('on');
+    clearTimeout(bannerT); bannerT = setTimeout(function () { bannerEl.classList.remove('on'); }, ms || 1400);
+  }
+  function multiplier() { return combo >= 20 ? 3 : (combo >= 8 ? 2 : 1); }
+  function cheer(sec) { cheerUntil = Math.max(cheerUntil, elapsed + (sec || 1.5)); }
+
   function update(dt) {
     elapsed += dt;
-    speed = 0.55 + Math.min(elapsed / DURATION, 1) * 0.45;
+    var p = Math.min(elapsed / DURATION, 1);
+    speed = elapsed < HALF ? 0.55 + p * 0.3 : 0.8 + (p - 0.5) * 0.4;
+    if (!halfShown && elapsed >= HALF) { halfShown = true; banner('Secondo tempo!<small>SI ACCELERA</small>', 1600); cheer(1.6); }
     var spd = elapsed < hitUntil ? speed * 0.5 : speed;
     scroll = (scroll + dt * spd * 14) % 1000;
     runPhase += dt * 14 * spd;
@@ -253,58 +350,147 @@
       var o = items[i]; o.d -= dt * spd * 0.9;
       if (o.d < -0.05) { items.splice(i, 1); continue; }
       if (o.d < 0.06 && o.d > -0.02 && Math.abs(o.l - laneX) < 0.45) {
-        if (o.k === 'ball') { score += elapsed < bonusUntil ? 20 : 10; items.splice(i, 1); }
-        else if (o.k === 'star') { bonusUntil = elapsed + 5; items.splice(i, 1); }
+        if (o.k === 'ball') {
+          var before = multiplier(); combo++;
+          score += 10 * multiplier() * (elapsed < bonusUntil ? 2 : 1);
+          if (multiplier() > before) { banner('Combo ×' + multiplier(), 900); cheer(1.2); }
+          items.splice(i, 1);
+        }
+        else if (o.k === 'star') { bonusUntil = elapsed + 5; cheer(1.5); items.splice(i, 1); }
         else if (!o.hitDone) {
           var jumpable = o.k !== 'def';
           if (!(jumpable && airborne)) {
-            o.hitDone = true; hitUntil = elapsed + 1; score = Math.max(0, score - 20);
+            o.hitDone = true; hitUntil = elapsed + 1; score = Math.max(0, score - 20); combo = 0;
             flash.style.opacity = 1; setTimeout(function () { flash.style.opacity = 0; }, 160);
-            if (navigator.vibrate) try { navigator.vibrate(60); } catch (e) {}
           }
         }
       }
     }
-    if (elapsed >= DURATION) end();
+    if (elapsed >= DURATION) startPen();
+  }
+
+  // --- rigore finale
+  function goalBox() {
+    var gw = Math.min(W * 0.82, 560), gh = gw * 0.36, gy = horizon() + (ground() - horizon()) * 0.42;
+    return { x: W / 2 - gw / 2, y: gy - gh, w: gw, h: gh, bottom: gy };
+  }
+  function startPen() {
+    state = 'pen'; items = []; jumpT = -1;
+    pen = { t: 0, aim: null, keeper: 0, shotT: -1, done: false, goal: false };
+    tBox.classList.remove('low');
+    banner('Rigore!<small>TOCCA DOVE VUOI TIRARE</small>', 1800);
+  }
+  function shoot(dir) {
+    if (!pen || pen.aim !== null) return;
+    pen.aim = dir; pen.shotT = 0;
+    var r = Math.random(); pen.keeper = r < 0.34 ? -1 : (r < 0.67 ? 0 : 1);
+    pen.goal = pen.keeper !== dir;
+  }
+  function updatePen(dt) {
+    elapsed += dt; pen.t += dt;
+    if (pen.aim === null && pen.t > 5) shoot([-1, 0, 1][Math.floor(Math.random() * 3)]);
+    if (pen.shotT >= 0) {
+      pen.shotT += dt / 0.55;
+      if (pen.shotT >= 1 && !pen.done) {
+        pen.done = true;
+        if (pen.goal) { score += 100; cheer(2.5); banner('Gooool!<small>+100 PUNTI</small>', 1600); }
+        else banner('Parata!<small>SARÀ PER LA PROSSIMA</small>', 1600);
+        setTimeout(end, 1700);
+      }
+    }
+  }
+  function drawPen() {
+    var g = goalBox();
+    // porta
+    ctx.fillStyle = 'rgba(255,255,255,.08)'; ctx.fillRect(g.x, g.y, g.w, g.h);
+    ctx.strokeStyle = 'rgba(255,255,255,.35)'; ctx.lineWidth = 1;
+    for (var n = 1; n < 12; n++) { ctx.beginPath(); ctx.moveTo(g.x + g.w * n / 12, g.y); ctx.lineTo(g.x + g.w * n / 12, g.bottom); ctx.stroke(); }
+    for (var m = 1; m < 5; m++) { ctx.beginPath(); ctx.moveTo(g.x, g.y + g.h * m / 5); ctx.lineTo(g.x + g.w, g.y + g.h * m / 5); ctx.stroke(); }
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = Math.max(4, g.w * 0.012);
+    ctx.beginPath(); ctx.moveTo(g.x, g.bottom); ctx.lineTo(g.x, g.y); ctx.lineTo(g.x + g.w, g.y); ctx.lineTo(g.x + g.w, g.bottom); ctx.stroke();
+    // zone di tiro
+    if (pen.aim === null) {
+      var a = 0.18 + Math.abs(Math.sin(elapsed * 4)) * 0.18;
+      [-1, 0, 1].forEach(function (z) {
+        var zx = g.x + g.w * (z + 1) / 3;
+        ctx.fillStyle = 'rgba(228,27,29,' + a + ')'; ctx.fillRect(zx + 6, g.y + 6, g.w / 3 - 12, g.h - 12);
+        ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.font = '800 ' + Math.round(g.h * 0.28) + 'px Archivo, sans-serif';
+        ctx.fillText(z < 0 ? '←' : (z > 0 ? '→' : '↑'), zx + g.w / 6, g.y + g.h * 0.62);
+      });
+    }
+    // portiere
+    var kp = pen.shotT >= 0 ? Math.min(1, pen.shotT * 1.4) : 0;
+    var sway = pen.aim === null ? Math.sin(elapsed * 3) * 0.12 : 0;
+    var kx = W / 2 + (pen.keeper * kp * 0.75 + sway) * g.w * 0.33, ks = g.h / 120, ky = g.bottom;
+    ctx.save(); ctx.translate(kx, ky - 60 * ks); ctx.rotate(pen.keeper * kp * 0.9); ctx.translate(0, 60 * ks);
+    ctx.fillStyle = '#111'; ctx.fillRect(-14 * ks, -45 * ks, 10 * ks, 45 * ks); ctx.fillRect(4 * ks, -45 * ks, 10 * ks, 45 * ks);
+    ctx.fillStyle = '#1FA35B'; ctx.fillRect(-20 * ks, -95 * ks, 40 * ks, 52 * ks);
+    ctx.fillRect(-48 * ks, -95 * ks, 28 * ks, 10 * ks); ctx.fillRect(20 * ks, -95 * ks, 28 * ks, 10 * ks);
+    ctx.fillStyle = '#fff'; ctx.fillRect(-56 * ks, -98 * ks, 10 * ks, 14 * ks); ctx.fillRect(46 * ks, -98 * ks, 10 * ks, 14 * ks);
+    ctx.fillStyle = C.skin; ctx.beginPath(); ctx.arc(0, -106 * ks, 12 * ks, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+    // pallone
+    var bx0 = W / 2, by0 = ground() - 40, br0 = Math.min(28, W * 0.06), bx = bx0, by = by0, br = br0;
+    if (pen.shotT >= 0) {
+      var t = Math.min(1, pen.shotT), e = 1 - (1 - t) * (1 - t);
+      var tx = W / 2 + pen.aim * g.w * 0.33, ty = g.y + g.h * (pen.aim === 0 ? 0.3 : 0.45);
+      if (!pen.goal) { tx = kx; ty = g.y + g.h * 0.35; }
+      bx = bx0 + (tx - bx0) * e; by = by0 + (ty - by0) * e - Math.sin(t * Math.PI) * 40; br = br0 * (1 - 0.6 * e);
+    }
+    shadow(bx, pen.shotT >= 0 ? by + br + 6 : by0 + br0 * 0.9, br);
+    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(bx, by, br, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = '#111'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.fillStyle = '#111'; poly(bx, by, br * 0.42, 5, elapsed * (pen.shotT >= 0 ? 12 : 0)); ctx.fill();
   }
 
   var tEl = document.getElementById('t'), sEl = document.getElementById('s'), tBox = document.getElementById('hud-time'), mEl = document.getElementById('mult');
+  var cEl = document.getElementById('combo'), cnEl = document.getElementById('combo-n');
   function render() {
     ctx.clearRect(0, 0, W, H);
     drawField();
-    items.slice().sort(function (a, b) { return b.d - a.d; }).forEach(function (o) { if (o.d <= 1.2 && o.d >= 0) drawItem(o); });
-    drawPlayer();
+    if (state === 'pen') drawPen();
+    else {
+      items.slice().sort(function (a, b) { return b.d - a.d; }).forEach(function (o) { if (o.d <= 1.2 && o.d >= 0) drawItem(o); });
+      drawPlayer();
+    }
     var left = Math.max(0, Math.ceil(DURATION - elapsed));
     tEl.textContent = left; sEl.textContent = score;
     tBox.classList.toggle('low', left <= 10 && state === 'play');
     mEl.style.display = elapsed < bonusUntil && state === 'play' ? 'block' : 'none';
+    var mult = multiplier();
+    cEl.style.display = state === 'play' && mult > 1 ? 'block' : 'none';
+    cnEl.textContent = '×' + mult;
   }
 
   function loop(ts) {
-    if (state !== 'play') return;
+    if (state !== 'play' && state !== 'pen') return;
     var dt = Math.min((ts - last) / 1000, 0.05); last = ts;
-    update(dt); render();
+    if (state === 'play') update(dt); else updatePen(dt);
+    render();
     requestAnimationFrame(loop);
   }
 
   function start() {
-    state = 'play'; elapsed = 0; score = 0; items = []; lane = 0; laneX = 0; jumpT = -1; bonusUntil = 0; hitUntil = 0; spawnAcc = 0.4;
+    state = 'play'; elapsed = 0; score = 0; items = []; lane = 0; laneX = 0; jumpT = -1; bonusUntil = 0; hitUntil = 0; cheerUntil = 0; spawnAcc = 0.4;
+    combo = 0; halfShown = false; pen = null; bannerEl.classList.remove('on');
     document.getElementById('start').hidden = true; document.getElementById('end').hidden = true;
     last = performance.now(); requestAnimationFrame(loop);
   }
   function rankFor(p) {
-    if (p < 150) return ['PANCHINARO', 'Il mister ti guarda. Riprova.'];
-    if (p < 350) return ['TITOLARE', 'Domenica giochi dall\'inizio.'];
-    if (p < 600) return ['BOMBER', 'Picci inizia a preoccuparsi.'];
+    if (p < 250) return ['PANCHINARO', 'Il mister ti guarda. Riprova.'];
+    if (p < 600) return ['TITOLARE', 'Domenica giochi dall\'inizio.'];
+    if (p < 1000) return ['BOMBER', 'Picci inizia a preoccuparsi.'];
     return ['CAPOCANNONIERE', 'Lo stemma sul petto, il nome nei titoli.'];
   }
   function end() {
+    if (state === 'end') return;
     state = 'end'; render();
     var r = rankFor(score), isBest = score > best;
     if (isBest) { best = score; try { localStorage.setItem('cds-best', best); } catch (e) {} }
     document.getElementById('rank').textContent = r[0];
     document.getElementById('final').textContent = score;
-    document.getElementById('end-msg').textContent = 'punti in 60 secondi · ' + r[1];
+    var rig = pen ? (pen.goal ? 'Rigore segnato. ' : 'Rigore parato. ') : '';
+    document.getElementById('end-msg').textContent = rig + r[1];
     document.getElementById('best-end').textContent = isBest ? 'Nuovo record personale!' : 'Il tuo record: ' + best;
     var url = location.origin + location.pathname;
     document.getElementById('share').href = 'https://wa.me/?text=' + encodeURIComponent('Ho fatto ' + score + ' punti a "60 secondi con la CDS" (' + r[0].toLowerCase() + '). Mi batti? ' + url);
@@ -317,23 +503,38 @@
   // --- comandi
   function move(dir) { if (state === 'play') lane = Math.max(-1, Math.min(1, lane + dir)); }
   function jump() { if (state === 'play' && jumpT < 0) jumpT = 0; }
+  function zone(clientX) { var x = clientX - wrap.getBoundingClientRect().left; return x < W / 3 ? -1 : (x > W * 2 / 3 ? 1 : 0); }
   window.addEventListener('keydown', function (e) {
+    var k = e.key;
+    if (state === 'pen') {
+      if (k === 'ArrowLeft' || k === 'a') shoot(-1); else if (k === 'ArrowRight' || k === 'd') shoot(1); else if (k === 'ArrowUp' || k === ' ' || k === 'w') shoot(0); else return;
+      e.preventDefault(); return;
+    }
     if (state !== 'play') return;
-    if (e.key === 'ArrowLeft' || e.key === 'a') { move(-1); e.preventDefault(); }
-    else if (e.key === 'ArrowRight' || e.key === 'd') { move(1); e.preventDefault(); }
-    else if (e.key === 'ArrowUp' || e.key === ' ' || e.key === 'w') { jump(); e.preventDefault(); }
+    if (k === 'ArrowLeft' || k === 'a') { move(-1); e.preventDefault(); }
+    else if (k === 'ArrowRight' || k === 'd') { move(1); e.preventDefault(); }
+    else if (k === 'ArrowUp' || k === ' ' || k === 'w') { jump(); e.preventDefault(); }
   });
-  var tx0 = 0, ty0 = 0, tt0 = 0;
-  wrap.addEventListener('touchstart', function (e) { var t = e.touches[0]; tx0 = t.clientX; ty0 = t.clientY; tt0 = Date.now(); }, { passive: true });
+  var tx0 = 0, ty0 = 0;
+  wrap.addEventListener('touchstart', function (e) { var t = e.touches[0]; tx0 = t.clientX; ty0 = t.clientY; }, { passive: true });
   wrap.addEventListener('touchend', function (e) {
-    if (state !== 'play') return;
     var t = e.changedTouches[0], dx = t.clientX - tx0, dy = t.clientY - ty0;
+    if (state === 'pen') { shoot(zone(t.clientX)); return; }
+    if (state !== 'play') return;
     if (Math.abs(dx) < 24 && Math.abs(dy) < 24) { move(t.clientX < W / 2 ? -1 : 1); return; }
     if (Math.abs(dy) > Math.abs(dx)) { if (dy < 0) jump(); } else move(dx > 0 ? 1 : -1);
   }, { passive: true });
-  wrap.addEventListener('mousedown', function (e) { if (state === 'play' && e.button === 0 && !('ontouchstart' in window)) move(e.clientX - wrap.getBoundingClientRect().left < W / 2 ? -1 : 1); });
+  wrap.addEventListener('mousedown', function (e) {
+    if (e.button !== 0 || ('ontouchstart' in window)) return;
+    if (state === 'pen') { shoot(zone(e.clientX)); return; }
+    if (state === 'play') move(e.clientX - wrap.getBoundingClientRect().left < W / 2 ? -1 : 1);
+  });
 
+  window.addEventListener('resize', function () { resize(); if (state !== 'play' && state !== 'pen') render(); });
+  resize();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { buildStands(); if (state === 'start') render(); });
   render();
+  if (/[?&]test\b/.test(location.search)) window.__cds = { get state() { return state; }, set elapsed(v) { elapsed = v; }, get score() { return score; }, setCombo: function (v) { combo = v; } };
 })();
 </script>
 </body>
