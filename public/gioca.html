@@ -60,7 +60,7 @@
   <canvas id="game" aria-label="Gioco: 90 secondi con la CDS"></canvas>
   <div class="flash" id="flash"></div>
   <div class="hud" aria-live="off">
-    <div><div class="box time" id="hud-time"><b id="t">90</b><span>SECONDI</span></div><div class="yc" id="yc" title="Ammonito"></div></div>
+    <div><div class="box time" id="hud-time"><b id="t">0'</b><span>MINUTO</span></div><div class="yc" id="yc" title="Ammonito"></div></div>
     <div class="box"><b id="s">0</b><span>PUNTI</span></div>
   </div>
   <div class="mult" id="mult">BONUS PICCI ×2</div>
@@ -87,7 +87,7 @@
     <div class="panel">
       <span class="title" id="rank">TITOLARE</span>
       <div class="big" id="final">0</div>
-      <p id="end-msg">punti in 90 secondi</p>
+      <p id="end-msg">punti in 90 minuti</p>
       <span class="best" id="best-end"></span>
       <div class="btns">
         <button class="btn btn-w" type="button" id="again">Rigioca</button>
@@ -113,9 +113,9 @@
   }
 
   var C = { navy: '#0B2357', navyD: '#071739', red: '#E41B1D', white: '#fff', grass1: '#2E8B3E', grass2: '#287A36', line: 'rgba(255,255,255,.85)', skin: '#E7B28A', gold: '#F5B800' };
-  var DURATION = 90, HALF = 45, state = 'start', last = 0, elapsed = 0, score = 0, bonusUntil = 0, hitUntil = 0, cheerUntil = 0;
+  var DURATION = 92, REG = 90, HALF = 45, state = 'start', last = 0, elapsed = 0, score = 0, bonusUntil = 0, hitUntil = 0, cheerUntil = 0;
   var lane = 0, laneX = 0, jumpT = -1, runPhase = 0, scroll = 0, speed = 0.55, spawnAcc = 0, items = [];
-  var combo = 0, halfShown = false, pen = null, cards = 0, sentOffAt = 0, ycEl = document.getElementById('yc');
+  var combo = 0, halfShown = false, pen = null, cards = 0, sentOffAt = 0, varUsed = false, gameId = 0, injShown = false, ycEl = document.getElementById('yc');
   var best = 0; try { best = +localStorage.getItem('cds-best') || 0; } catch (e) {}
 
   // --- prospettiva: d=0 vicino, d=1 orizzonte
@@ -375,6 +375,7 @@
     elapsed += dt;
     var p = Math.min(elapsed / DURATION, 1);
     speed = elapsed < HALF ? 0.62 + p * 0.3 : 0.9 + (p - 0.5) * 0.44;
+    if (!injShown && elapsed >= REG) { injShown = true; banner('Recupero +' + (DURATION - REG) + '\'<small>ULTIMI SECONDI</small>', 1400); }
     if (!halfShown && elapsed >= HALF) { halfShown = true; banner('Secondo tempo!<small>SI ACCELERA</small>', 1600); cheer(1.6); }
     var spd = elapsed < hitUntil ? speed * 0.5 : speed;
     scroll = (scroll + dt * spd * 14) % 1000;
@@ -405,6 +406,11 @@
               hitUntil = elapsed + 1.2; score = Math.max(0, score - 20);
               ycEl.classList.add('on');
               banner('<span class="card y"></span>Ammonito!<small>AL PROSSIMO SEI FUORI</small>', 1400);
+              if (!varUsed && Math.random() < 0.25) {
+                varUsed = true; hitUntil = elapsed + 3.2; var gid = gameId;
+                setTimeout(function () { if (gid === gameId && state === 'play' && cards === 1) banner('Check VAR…<small>REVISIONE IN CORSO</small>', 1500); }, 1300);
+                setTimeout(function () { if (gid === gameId && state === 'play' && cards === 1) { cards = 0; ycEl.classList.remove('on'); cheer(1.5); banner('Giallo revocato!<small>IL VAR TI SALVA</small>', 1500); } }, 2900);
+              }
             } else { sendOff(); return; }
           }
         }
@@ -415,7 +421,7 @@
 
   // --- secondo giallo: rosso e triplice fischio
   function sendOff() {
-    state = 'over'; sentOffAt = Math.ceil(elapsed); hitUntil = elapsed + 5;
+    state = 'over'; sentOffAt = clock(); hitUntil = elapsed + 5;
     render();
     banner('<span class="card r"></span>Espulso!<small>SECONDO GIALLO</small>', 1300);
     setTimeout(function () { if (state === 'over') banner('Triplice fischio!<small>FINE PARTITA</small>', 1300); }, 1400);
@@ -506,15 +512,16 @@
       items.slice().sort(function (a, b) { return b.d - a.d; }).forEach(function (o) { if (o.d <= 1.2 && (o.d >= 0 || (o.k === 'slide' && o.d > -0.12))) drawItem(o); });
       drawPlayer();
     }
-    var left = Math.max(0, Math.ceil(DURATION - elapsed));
-    tEl.textContent = left; sEl.textContent = score;
-    tBox.classList.toggle('low', left <= 10 && state === 'play');
+    tEl.textContent = clock(); sEl.textContent = score;
+    tBox.classList.toggle('low', elapsed >= 80 && state === 'play');
     mEl.style.display = elapsed < bonusUntil && state === 'play' ? 'block' : 'none';
     var mult = multiplier();
     cEl.style.display = state === 'play' && mult > 1 ? 'block' : 'none';
     cnEl.textContent = '×' + mult;
   }
 
+  function minute() { return Math.min(Math.floor(elapsed), DURATION); }
+  function clock() { var m = minute(); return m <= REG ? m + '\'' : REG + '+' + (m - REG) + '\''; }
   function loop(ts) {
     if (state !== 'play' && state !== 'pen') return;
     var dt = Math.min((ts - last) / 1000, 0.05); last = ts;
@@ -525,7 +532,7 @@
 
   function start() {
     state = 'play'; elapsed = 0; score = 0; items = []; lane = 0; laneX = 0; jumpT = -1; bonusUntil = 0; hitUntil = 0; cheerUntil = 0; spawnAcc = 0.4;
-    combo = 0; halfShown = false; pen = null; cards = 0; sentOffAt = 0; ycEl.classList.remove('on'); bannerEl.classList.remove('on');
+    combo = 0; halfShown = false; pen = null; cards = 0; sentOffAt = 0; varUsed = false; injShown = false; gameId++; ycEl.classList.remove('on'); bannerEl.classList.remove('on');
     document.getElementById('start').hidden = true; document.getElementById('end').hidden = true;
     last = performance.now(); requestAnimationFrame(loop);
   }
@@ -542,7 +549,7 @@
     if (isBest) { best = score; try { localStorage.setItem('cds-best', best); } catch (e) {} }
     document.getElementById('rank').textContent = r[0];
     document.getElementById('final').textContent = score;
-    var rig = sentOffAt ? 'Espulso al ' + sentOffAt + '° secondo. ' : (pen ? (pen.goal ? 'Rigore segnato. ' : 'Rigore parato. ') : '');
+    var rig = sentOffAt ? 'Espulso al ' + sentOffAt + '. ' : (pen ? (pen.goal ? 'Rigore segnato. ' : 'Rigore parato. ') : '');
     document.getElementById('end-msg').textContent = rig + r[1];
     document.getElementById('best-end').textContent = isBest ? 'Nuovo record personale!' : 'Il tuo record: ' + best;
     var url = location.origin + location.pathname;
