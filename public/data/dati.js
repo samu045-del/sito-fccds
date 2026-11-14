@@ -59,8 +59,8 @@ window.CDS = {
 
   // Trasmettiamo in diretta solo le partite in casa: qui va l'ultima diretta disponibile.
   ultimaDiretta: {
-    titolo: "FC CDS – Palmarola Club 7-3",
-    youtubeId: "M16NWXeht60",
+    titolo: "FC CDS – Real Roma Nord (diretta)",
+    youtubeId: "L2PwtsWMY5k",
     // true solo se su YouTube Studio il video ha "Consenti incorporamento" attivo; se false, il box apre YouTube
     incorporabile: false
   },
@@ -89,7 +89,7 @@ window.CDS = {
     { g: "G2", data: "Dom 25 ott · 15:00", casa: "Amatori Allumiere 1983", trasferta: "FC CDS", ris: "3-4", stato: "V" },
     { g: "G3", data: "Sab 31 ott · 18:00", casa: "FC CDS", trasferta: "Palmarola Club", ris: "7-3", stato: "V", video: "M16NWXeht60" },
     { g: "G4", data: "Dom 8 nov · 15:00", casa: "Atletico", trasferta: "FC CDS", ris: "1-3", stato: "V" },
-    { g: "G5", data: "Sab 14 nov · 18:00", casa: "FC CDS", trasferta: "Real Roma Nord", stato: "prossima" },
+    { g: "G5", data: "Sab 14 nov · 18:00", casa: "FC CDS", trasferta: "Real Roma Nord", stato: "prossima", video: "L2PwtsWMY5k" },
     { g: "G6", data: "Dom 22 nov · 15:00", casa: "Pol. Pian Due Torri", trasferta: "FC CDS" },
     { g: "G7", data: "Sab 28 nov · 18:00", casa: "FC CDS", trasferta: "Pro Calcio Cerveteri" },
     { g: "G8", data: "Dom 6 dic · 15:00", casa: "F.C. Palombara", trasferta: "FC CDS" },
