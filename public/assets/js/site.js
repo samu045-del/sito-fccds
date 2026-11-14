@@ -181,7 +181,7 @@
       var t = function (x) { return '<span class="tm">' + logo(x, 'mini') + (isCDS(x) ? '<b>' + esc(x) + '</b>' : '<span title="' + esc(x) + '">' + esc((D.nomiBrevi || {})[x] || x) + '</span>') + '</span>'; };
       return '<li class="' + cls + '"><span class="g">' + m.g + '</span><span class="d">' + esc(m.data) + '</span><span class="m">' + t(m.casa) + ' <span style="opacity:.55">–</span> ' + t(m.trasferta) + '</span><span class="r">' + tag + '</span></li>';
     }).join('');
-    $('#cla-h').textContent = 'DOPO LA ' + D.giornataClassifica + 'ª GIORNATA';
+    $('#cla-h').textContent = D.giornataInCorso ? D.giornataClassifica + 'ª GIORNATA IN CORSO' : 'DOPO LA ' + D.giornataClassifica + 'ª GIORNATA';
     $('#table tbody').innerHTML = D.classifica.map(function (r, i) {
       var me = isCDS(r[0]);
       return '<tr' + (me ? ' class="us"' : '') + '><td class="pos t-l">' + (i + 1) + '</td><th scope="row" class="t-l"><span class="tm">' + logo(r[0], 'mini') + esc(r[0]) + '</span></th><td class="pt">' + r[1] + '</td><td>' + r[2] + '</td><td class="hide-s">' + r[3] + '</td><td class="hide-s">' + r[4] + '</td><td class="hide-s">' + r[5] + '</td><td>' + r[6] + '</td><td>' + r[7] + '</td><td>' + (r[8] > 0 ? '+' : '') + r[8] + '</td></tr>';

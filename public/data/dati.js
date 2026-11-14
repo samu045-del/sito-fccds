@@ -4,32 +4,33 @@
   Questo è l'unico file da modificare ogni settimana.
   Dopo ogni partita aggiorna: prossimaPartita, ultimaPartita, calendario, classifica, marcatori.
   Fonte classifica e marcatori: Tuttocampo (Terza Categoria Roma, Girone A).
-  Ultimo aggiornamento: 10 novembre 2026, dopo la 4ª giornata.
+  Ultimo aggiornamento: 14 novembre 2026, dopo FC CDS – Real Roma Nord (5ª giornata in corso).
 */
 window.CDS = {
-  aggiornato: "10 novembre 2026",
-  giornataClassifica: 4,
+  aggiornato: "14 novembre 2026",
+  giornataClassifica: 5,
+  giornataInCorso: true, // metti false quando sono state giocate tutte le partite della giornata
 
   prossimaPartita: {
-    giornata: "G5",
-    data: "2026-11-14T18:00:00+01:00",
-    etichettaData: "Sabato 14 novembre 2026 · ore 18:00",
-    casa: "FC CDS",
-    trasferta: "Real Roma Nord",
-    inCasa: true,
-    campo: "Centro Sportivo Dabliu Eur",
-    linkMappa: "https://www.google.com/maps/search/?api=1&query=Centro%20Sportivo%20Dabliu%20Eur%20Roma"
+    giornata: "G6",
+    data: "2026-11-22T15:00:00+01:00",
+    etichettaData: "Domenica 22 novembre 2026 · ore 15:00",
+    casa: "Pol. Pian Due Torri",
+    trasferta: "FC CDS",
+    inCasa: false,
+    campo: "Campo da confermare",
+    linkMappa: ""
   },
 
   ultimaPartita: {
-    giornata: "G4",
-    etichettaData: "Domenica 8 novembre 2026",
-    casa: "Atletico",
-    trasferta: "FC CDS",
-    golCasa: 1,
-    golTrasferta: 3,
-    esito: "V",
-    marcatoriCDS: ["Picci (2)", "Dileo"]
+    giornata: "G5",
+    etichettaData: "Sabato 14 novembre 2026",
+    casa: "FC CDS",
+    trasferta: "Real Roma Nord",
+    golCasa: 2,
+    golTrasferta: 2,
+    esito: "N",
+    marcatoriCDS: ["Sanseverino", "Mercurio"]
   },
 
   // Campo di casa (usato in home, Il Club e Contatti)
@@ -59,7 +60,7 @@ window.CDS = {
 
   // Trasmettiamo in diretta solo le partite in casa: qui va l'ultima diretta disponibile.
   ultimaDiretta: {
-    titolo: "FC CDS – Real Roma Nord (diretta)",
+    titolo: "FC CDS – Real Roma Nord 2-2",
     youtubeId: "L2PwtsWMY5k",
     // true solo se su YouTube Studio il video ha "Consenti incorporamento" attivo; se false, il box apre YouTube
     incorporabile: false
@@ -71,7 +72,7 @@ window.CDS = {
     diretta: "https://www.youtube.com/@FootballClub-CDS/live"
   },
 
-  riepilogo: { posizione: "4°", punti: 9, vittorie: "3/3", golFatti: 14, golSubiti: 7 },
+  riepilogo: { posizione: "2°", punti: 10, vittorie: "3/4", golFatti: 16, golSubiti: 9 },
 
   // Nomi corti usati solo nel calendario (in classifica resta il nome completo)
   nomiBrevi: {
@@ -89,8 +90,8 @@ window.CDS = {
     { g: "G2", data: "Dom 25 ott · 15:00", casa: "Amatori Allumiere 1983", trasferta: "FC CDS", ris: "3-4", stato: "V" },
     { g: "G3", data: "Sab 31 ott · 18:00", casa: "FC CDS", trasferta: "Palmarola Club", ris: "7-3", stato: "V", video: "M16NWXeht60" },
     { g: "G4", data: "Dom 8 nov · 15:00", casa: "Atletico", trasferta: "FC CDS", ris: "1-3", stato: "V" },
-    { g: "G5", data: "Sab 14 nov · 18:00", casa: "FC CDS", trasferta: "Real Roma Nord", stato: "prossima", video: "L2PwtsWMY5k" },
-    { g: "G6", data: "Dom 22 nov · 15:00", casa: "Pol. Pian Due Torri", trasferta: "FC CDS" },
+    { g: "G5", data: "Sab 14 nov · 18:00", casa: "FC CDS", trasferta: "Real Roma Nord", ris: "2-2", stato: "N", video: "L2PwtsWMY5k" },
+    { g: "G6", data: "Dom 22 nov · 15:00", casa: "Pol. Pian Due Torri", trasferta: "FC CDS", stato: "prossima" },
     { g: "G7", data: "Sab 28 nov · 18:00", casa: "FC CDS", trasferta: "Pro Calcio Cerveteri" },
     { g: "G8", data: "Dom 6 dic · 15:00", casa: "F.C. Palombara", trasferta: "FC CDS" },
     { g: "G9", data: "Dom 13 dic · 15:00", casa: "Black Lions", trasferta: "FC CDS" },
@@ -103,29 +104,31 @@ window.CDS = {
   ],
 
   // squadra, punti, giocate, vinte, pari, perse, gol fatti, gol subiti, differenza
+  // ordine: punti, poi differenza reti, poi gol fatti
   classifica: [
-    ["F.C. Palombara", 10, 4, 3, 1, 0, 10, 2, 8],
-    ["Pro Calcio Cerveteri", 10, 4, 3, 1, 0, 13, 6, 7],
-    ["Tusker Roma", 9, 4, 3, 0, 1, 11, 3, 8],
-    ["FC CDS", 9, 3, 3, 0, 0, 14, 7, 7],
-    ["Academy Monti della Tolfa", 9, 3, 3, 0, 0, 10, 4, 6],
-    ["Real Roma Nord", 8, 4, 2, 2, 0, 9, 4, 5],
-    ["DLF Youth Academy", 7, 4, 2, 1, 1, 18, 9, 9],
-    ["Vigor Mellis", 4, 4, 1, 1, 2, 7, 9, -2],
-    ["Pol. Pian Due Torri", 3, 4, 1, 0, 3, 6, 9, -3],
-    ["GDZ Campagnano", 3, 4, 1, 0, 3, 9, 13, -4],
-    ["Palmarola Club", 3, 4, 1, 0, 3, 9, 13, -4],
-    ["Black Lions", 3, 3, 1, 0, 2, 3, 7, -4],
-    ["Atletico", 3, 4, 1, 0, 3, 5, 12, -7],
-    ["Amatori Allumiere 1983", 0, 4, 0, 0, 4, 9, 16, -7],
-    ["Delta Calcio", 0, 3, 0, 0, 3, 1, 20, -19]
+    ["F.C. Palombara",  10,  4,  3,  1,  0,  10,  2,  8],
+    ["FC CDS",  10,  4,  3,  1,  0,  16,  9,  7],
+    ["Pro Calcio Cerveteri",  10,  4,  3,  1,  0,  13,  6,  7],
+    ["Tusker Roma",  9,  5,  3,  0,  2,  12,  6,  6],
+    ["Academy Monti della Tolfa",  9,  3,  3,  0,  0,  10,  4,  6],
+    ["Real Roma Nord",  9,  5,  2,  3,  0,  11,  6,  5],
+    ["DLF Youth Academy",  7,  4,  2,  1,  1,  18,  9,  9],
+    ["GDZ Campagnano",  6,  5,  2,  0,  3,  12,  14,  -2],
+    ["Vigor Mellis",  4,  4,  1,  1,  2,  7,  9,  -2],
+    ["Pol. Pian Due Torri",  3,  4,  1,  0,  3,  6,  9,  -3],
+    ["Palmarola Club",  3,  4,  1,  0,  3,  9,  13,  -4],
+    ["Black Lions",  3,  3,  1,  0,  2,  3,  7,  -4],
+    ["Atletico",  3,  4,  1,  0,  3,  5,  12,  -7],
+    ["Amatori Allumiere 1983",  0,  4,  0,  0,  4,  9,  16,  -7],
+    ["Delta Calcio",  0,  3,  0,  0,  3,  1,  20,  -19]
   ],
 
   marcatori: [
     { nome: "Picci", gol: 11, nota: "2 su rigore" },
+    { nome: "Mercurio", gol: 2 },
     { nome: "Dileo", gol: 1 },
-    { nome: "Mercurio", gol: 1 },
-    { nome: "Mollo", gol: 1 }
+    { nome: "Mollo", gol: 1 },
+    { nome: "Sanseverino", gol: 1 }
   ],
   assist: [
     { nome: "Sanseverino", n: 2 },
@@ -155,14 +158,14 @@ window.CDS = {
     { nome: "Daniele", cognome: "Cicivelli", ruolo: "CEN", foto: "cicivelli-daniele.jpg", compleanno: "28-10" },
     { nome: "Federico", cognome: "Mangione", ruolo: "CEN", foto: "", compleanno: "31-01" },
     { nome: "Damiano", cognome: "Perugini", ruolo: "CEN", foto: "perugini-damiano.jpg" },
-    { nome: "Simone", cognome: "Sanseverino", ruolo: "CEN", foto: "sanseverino-simone.jpg", assist: 2, compleanno: "12-04" },
+    { nome: "Simone", cognome: "Sanseverino", ruolo: "CEN", foto: "sanseverino-simone.jpg", gol: 1, assist: 2, compleanno: "12-04" },
     { nome: "Salvatore", cognome: "Scopelliti", ruolo: "CEN", foto: "scopelliti-salvatore.jpg" },
     { nome: "Diego", cognome: "Testi", ruolo: "CEN", foto: "testi-diego.jpg", compleanno: "27-07" },
     { nome: "Francesco", cognome: "Torzulli", ruolo: "CEN", foto: "torzulli-francesco.jpg", compleanno: "19-03" },
 
     { nome: "Lorenzo", cognome: "Di Fabrizio", ruolo: "ATT", foto: "" },
     { nome: "Gianmarco", cognome: "Dileo", ruolo: "ATT", foto: "dileo-gianmarco.jpg", gol: 1 },
-    { nome: "Francesco", cognome: "Mercurio", ruolo: "ATT", foto: "mercurio-francesco.jpg", gol: 1, assist: 1, compleanno: "21-01" },
+    { nome: "Francesco", cognome: "Mercurio", ruolo: "ATT", foto: "mercurio-francesco.jpg", gol: 2, assist: 1, compleanno: "21-01" },
     { nome: "Antonio Giulio", cognome: "Picci", ruolo: "ATT", foto: "", gol: 11, compleanno: "19-08" },
     { nome: "Gianluca", cognome: "Raho", ruolo: "ATT", foto: "raho-gianluca.jpg", compleanno: "07-04" },
     { nome: "Dario", cognome: "Stragapede", ruolo: "ATT", foto: "stragapede-dario.jpg" },
