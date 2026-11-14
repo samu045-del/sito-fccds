@@ -197,7 +197,9 @@
   /* ---------- CAMPO DI CASA (Club e Contatti) ---------- */
   var cc = D.campoCasa, campoEl = $('#campo');
   if (cc && campoEl) {
-    campoEl.innerHTML = '<p><strong>' + esc(cc.nome) + '</strong>' + (cc.indirizzo && cc.indirizzo.indexOf('[') < 0 ? '<br>' + esc(cc.indirizzo) : '') + '</p><p style="margin:0"><a class="btn btn-w" style="border-color:var(--navy)" href="' + esc(cc.linkMappa) + '" target="_blank" rel="noopener">Come arrivare</a></p>';
+    // mappa OpenStreetMap: nessun cookie di profilazione, a differenza di Google Maps
+    var mappa = (page === 'contatti' && cc.lat) ? '<div class="map"><iframe title="Mappa: ' + esc(cc.nome) + '" loading="lazy" referrerpolicy="no-referrer" src="https://www.openstreetmap.org/export/embed.html?bbox=' + (cc.lng - 0.006) + '%2C' + (cc.lat - 0.0032) + '%2C' + (cc.lng + 0.006) + '%2C' + (cc.lat + 0.0032) + '&amp;layer=mapnik&amp;marker=' + cc.lat + '%2C' + cc.lng + '"></iframe></div>' : '';
+    campoEl.innerHTML = mappa + '<p><strong>' + esc(cc.nome) + '</strong>' + (cc.indirizzo && cc.indirizzo.indexOf('[') < 0 ? '<br>' + esc(cc.indirizzo) : '') + '</p><p style="margin:0"><a class="btn btn-w" style="border-color:var(--navy)" href="' + esc(cc.linkMappa) + '" target="_blank" rel="noopener">Come arrivare</a></p>';
   }
 
   /* ---------- PARTNER ---------- */

@@ -36,8 +36,9 @@ window.CDS = {
   // Campo di casa (usato in home, Il Club e Contatti)
   campoCasa: {
     nome: "Centro Sportivo Dabliu Eur",
-    indirizzo: "[Indirizzo da confermare], Roma",
-    linkMappa: "https://www.google.com/maps/search/?api=1&query=Centro%20Sportivo%20Dabliu%20Eur%20Roma"
+    indirizzo: "Viale Egeo 98, 00144 Roma",
+    lat: 41.8311327, lng: 12.4544276, // per la mappa in Contatti
+    linkMappa: "https://www.google.com/maps/search/?api=1&query=Dabliu%20Eur%20Sport%20Club%2C%20Viale%20Egeo%2098%2C%20Roma"
   },
 
   // Loghi avversari: nome squadra esattamente come in calendario/classifica -> file in assets/img/squadre
