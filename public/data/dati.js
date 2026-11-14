@@ -18,8 +18,8 @@ window.CDS = {
     casa: "Pol. Pian Due Torri",
     trasferta: "FC CDS",
     inCasa: false,
-    campo: "Campo da confermare",
-    linkMappa: ""
+    campo: "Pian Due Torri, Lungotevere della Magliana 95, Roma",
+    linkMappa: "https://www.google.com/maps/search/?api=1&query=Lungotevere%20della%20Magliana%2095%2C%20Roma"
   },
 
   ultimaPartita: {
