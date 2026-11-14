@@ -16,7 +16,7 @@
   /* ---------- Header e footer ---------- */
   var links = [
     ['index.html', 'Home', 'home'], ['squadra.html', 'Squadra', 'squadra'],
-    ['calendario.html', 'Calendario & Classifica', 'calendario'], ['club.html', 'Il Club', 'club'],
+    ['calendario.html', 'Calendario & Classifica', 'calendario'], /* ['club.html', 'Il Club', 'club'], nascosto finché non ci sono i testi */
     ['partner.html', 'Partner', 'partner'], ['contatti.html', 'Contatti', 'contatti'], ['gioca.html', 'Gioca', 'gioca']
   ];
   var h = $('#site-header');
@@ -197,7 +197,7 @@
   /* ---------- CAMPO DI CASA (Club e Contatti) ---------- */
   var cc = D.campoCasa, campoEl = $('#campo');
   if (cc && campoEl) {
-    campoEl.innerHTML = '<p><strong>' + esc(cc.nome) + '</strong><br>' + esc(cc.indirizzo) + '</p><p style="margin:0"><a class="btn btn-w" style="border-color:var(--navy)" href="' + esc(cc.linkMappa) + '" target="_blank" rel="noopener">Come arrivare</a></p>';
+    campoEl.innerHTML = '<p><strong>' + esc(cc.nome) + '</strong>' + (cc.indirizzo && cc.indirizzo.indexOf('[') < 0 ? '<br>' + esc(cc.indirizzo) : '') + '</p><p style="margin:0"><a class="btn btn-w" style="border-color:var(--navy)" href="' + esc(cc.linkMappa) + '" target="_blank" rel="noopener">Come arrivare</a></p>';
   }
 
   /* ---------- PARTNER ---------- */
@@ -205,13 +205,13 @@
     $('#partners').innerHTML = D.partner.map(function (p) {
       var lg = p.logo ? '<div class="logo has-img"><img src="assets/img/partner/' + esc(p.logo) + '" alt="Logo ' + esc(p.nome) + '" width="400" height="400" loading="lazy"></div>' : '<div class="logo">[LOGO ' + esc(p.nome.toUpperCase()) + ']</div>';
       return '<article class="partner">' + lg + '<span>' + esc(p.ruolo.toUpperCase()) + '</span><h2>' + esc(p.nome) + '</h2></article>';
-    }).join('') + '<article class="partner" style="background:var(--navy);color:#fff"><div class="logo" style="border-color:rgba(255,255,255,.4);color:var(--soft)">IL TUO LOGO QUI</div><span style="color:var(--red-ll)">DIVENTA PARTNER</span><h2>Mettici la faccia (e il logo)</h2><a class="btn btn-w" href="contatti.html" style="align-self:flex-start">Scrivici</a></article>';
+    }).join('');
   }
 
   /* ---------- CONTATTI ---------- */
   if (page === 'contatti' && D.contatti) {
     var c = D.contatti, items = [];
-    items.push('<li><strong>Email:</strong> ' + (/@/.test(c.email) ? '<a href="mailto:' + esc(c.email) + '">' + esc(c.email) + '</a>' : '<span class="ph-text">' + esc(c.email) + '</span>') + '</li>');
+    if (c.email && /@/.test(c.email)) items.push('<li><strong>Email:</strong> <a href="mailto:' + esc(c.email) + '">' + esc(c.email) + '</a></li>');
     [['Instagram', c.instagram], ['TikTok', c.tiktok], ['YouTube', c.youtube]].forEach(function (s) {
       items.push('<li><strong>' + s[0] + ':</strong> ' + (s[1] ? '<a href="' + esc(s[1]) + '" target="_blank" rel="noopener">' + esc(s[1].replace(/^https?:\/\/(www\.)?/, '')) + '</a>' : '<span class="ph-text">[link ' + s[0] + ']</span>') + '</li>');
     });

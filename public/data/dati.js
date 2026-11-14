@@ -173,10 +173,10 @@ window.CDS = {
   ],
 
   staff: [
-    { nome: "Daniele", cognome: "Giuliani", ruolo: "[Ruolo]", foto: "giuliani-daniele.jpg" },
-    { nome: "Emanuele", cognome: "Costanzi", ruolo: "[Ruolo]", foto: "costanzi-emanuele.jpg" },
-    { nome: "Davide", cognome: "Fazio", ruolo: "[Ruolo]", foto: "fazio-davide.jpg" },
-    { nome: "Simone", cognome: "[Cognome]", ruolo: "[Ruolo]", foto: "simone.jpg" },
+    { nome: "Daniele", cognome: "Giuliani", ruolo: "Staff", foto: "giuliani-daniele.jpg" },
+    { nome: "Emanuele", cognome: "Costanzi", ruolo: "Staff", foto: "costanzi-emanuele.jpg" },
+    { nome: "Davide", cognome: "Fazio", ruolo: "Staff", foto: "fazio-davide.jpg" },
+    { nome: "", cognome: "Simone", ruolo: "Staff", foto: "simone.jpg" }, // cognome da aggiungere
     { nome: "Gaetano", cognome: "Carnevale", ruolo: "Creator", foto: "carnevale-gaetano.jpg" }
   ],
 
@@ -190,7 +190,7 @@ window.CDS = {
   },
 
   contatti: {
-    email: "[email del club]",
+    email: "", // vuota = non mostrata nei Contatti
     instagram: "https://www.instagram.com/footballclubcds/",
     tiktok: "https://www.tiktok.com/@footballclubcds",
     youtube: "https://www.youtube.com/@FootballClub-CDS"
