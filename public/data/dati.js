@@ -13,8 +13,8 @@ window.CDS = {
 
   prossimaPartita: {
     giornata: "G6",
-    data: "2026-11-22T15:00:00+01:00",
-    etichettaData: "Domenica 22 novembre 2026 · ore 15:00",
+    data: "2026-11-22T11:00:00+01:00",
+    etichettaData: "Domenica 22 novembre 2026 · ore 11:00",
     casa: "Pol. Pian Due Torri",
     trasferta: "FC CDS",
     inCasa: false,
@@ -91,7 +91,7 @@ window.CDS = {
     { g: "G3", data: "Sab 31 ott · 18:00", casa: "FC CDS", trasferta: "Palmarola Club", ris: "7-3", stato: "V", video: "M16NWXeht60" },
     { g: "G4", data: "Dom 8 nov · 15:00", casa: "Atletico", trasferta: "FC CDS", ris: "1-3", stato: "V" },
     { g: "G5", data: "Sab 14 nov · 18:00", casa: "FC CDS", trasferta: "Real Roma Nord", ris: "2-2", stato: "N", video: "L2PwtsWMY5k" },
-    { g: "G6", data: "Dom 22 nov · 15:00", casa: "Pol. Pian Due Torri", trasferta: "FC CDS", stato: "prossima" },
+    { g: "G6", data: "Dom 22 nov · 11:00", casa: "Pol. Pian Due Torri", trasferta: "FC CDS", stato: "prossima" },
     { g: "G7", data: "Sab 28 nov · 18:00", casa: "FC CDS", trasferta: "Pro Calcio Cerveteri" },
     { g: "G8", data: "Dom 6 dic · 15:00", casa: "F.C. Palombara", trasferta: "FC CDS" },
     { g: "G9", data: "Dom 13 dic · 15:00", casa: "Black Lions", trasferta: "FC CDS" },
