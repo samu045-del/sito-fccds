@@ -152,25 +152,28 @@ window.CDS = {
     { nome: "Joseph", cognome: "Meiyome", ruolo: "DIF", foto: "meyome-joseph.jpg", compleanno: "30-09" },
     { nome: "Simone", cognome: "Mollo", ruolo: "DIF", foto: "mollo-simone.jpg", gol: 1, assist: 1, compleanno: "04-10" },
     { nome: "Andrea", cognome: "Politi", ruolo: "DIF", foto: "politi-andrea.jpg", compleanno: "14-10" },
-    { nome: "Damiano", cognome: "Saccares", ruolo: "DIF", foto: "", compleanno: "12-05" },
+    { nome: "Damiano", cognome: "Saccares", ruolo: "DIF", foto: "saccares-damiano.jpg", compleanno: "12-05" },
     { nome: "Alessio", cognome: "Sanfilippo", ruolo: "DIF", foto: "sanfilippo-alessio.jpg", compleanno: "31-10" },
 
     { nome: "Matteo", cognome: "Carice", ruolo: "CEN", foto: "carice-matteo.jpg", assist: 1, compleanno: "20-12" },
     { nome: "Daniele", cognome: "Cicivelli", ruolo: "CEN", foto: "cicivelli-daniele.jpg", compleanno: "28-10" },
-    { nome: "Federico", cognome: "Mangione", ruolo: "CEN", foto: "", compleanno: "31-01" },
+    { nome: "Federico", cognome: "Mangione", ruolo: "CEN", foto: "mangione-federico.jpg", compleanno: "31-01" },
     { nome: "Damiano", cognome: "Perugini", ruolo: "CEN", foto: "perugini-damiano.jpg" },
     { nome: "Simone", cognome: "Sanseverino", ruolo: "CEN", foto: "sanseverino-simone.jpg", gol: 1, assist: 2, compleanno: "12-04" },
     { nome: "Salvatore", cognome: "Scopelliti", ruolo: "CEN", foto: "scopelliti-salvatore.jpg" },
     { nome: "Diego", cognome: "Testi", ruolo: "CEN", foto: "testi-diego.jpg", compleanno: "27-07" },
     { nome: "Francesco", cognome: "Torzulli", ruolo: "CEN", foto: "torzulli-francesco.jpg", compleanno: "19-03" },
 
-    { nome: "Lorenzo", cognome: "Di Fabrizio", ruolo: "ATT", foto: "" },
+    { nome: "Alessio", cognome: "Di Fabrizio", ruolo: "ATT", foto: "difabrizio-alessio.jpg" },
     { nome: "Gianmarco", cognome: "Dileo", ruolo: "ATT", foto: "dileo-gianmarco.jpg", gol: 1 },
     { nome: "Francesco", cognome: "Mercurio", ruolo: "ATT", foto: "mercurio-francesco.jpg", gol: 2, assist: 1, compleanno: "21-01" },
-    { nome: "Antonio Giulio", cognome: "Picci", ruolo: "ATT", foto: "", gol: 11, compleanno: "19-08" },
+    { nome: "Antonio Giulio", cognome: "Picci", ruolo: "ATT", foto: "picci-antonio.jpg", gol: 11, compleanno: "19-08" },
     { nome: "Gianluca", cognome: "Raho", ruolo: "ATT", foto: "raho-gianluca.jpg", compleanno: "07-04" },
     { nome: "Dario", cognome: "Stragapede", ruolo: "ATT", foto: "stragapede-dario.jpg" },
-    { nome: "Andrea", cognome: "Ferro", ruolo: "ATT", foto: "ferro-andrea.jpg", assist: 1 }
+    { nome: "Andrea", cognome: "Ferro", ruolo: "ATT", foto: "ferro-andrea.jpg", assist: 1 },
+
+    // ruolo in arrivo
+    { nome: "Gabriele", cognome: "Timpano", ruolo: "?", foto: "timpano-gabriele.jpg" }
   ],
 
   staff: [
