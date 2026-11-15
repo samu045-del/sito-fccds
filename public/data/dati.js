@@ -163,6 +163,7 @@ window.CDS = {
     { nome: "Salvatore", cognome: "Scopelliti", ruolo: "CEN", foto: "scopelliti-salvatore.jpg" },
     { nome: "Diego", cognome: "Testi", ruolo: "CEN", foto: "testi-diego.jpg", compleanno: "27-07" },
     { nome: "Francesco", cognome: "Torzulli", ruolo: "CEN", foto: "torzulli-francesco.jpg", compleanno: "19-03" },
+    { nome: "Gabriele", cognome: "Timpano", ruolo: "CEN", foto: "timpano-gabriele-2.jpg" },
 
     { nome: "Alessio", cognome: "Di Fabrizio", ruolo: "ATT", foto: "difabrizio-alessio-2.jpg" },
     { nome: "Gianmarco", cognome: "Dileo", ruolo: "ATT", foto: "dileo-gianmarco.jpg", gol: 1 },
@@ -170,10 +171,7 @@ window.CDS = {
     { nome: "Antonio Giulio", cognome: "Picci", ruolo: "ATT", foto: "picci-antonio-2.jpg", gol: 11, compleanno: "19-08" },
     { nome: "Gianluca", cognome: "Raho", ruolo: "ATT", foto: "raho-gianluca.jpg", compleanno: "07-04" },
     { nome: "Dario", cognome: "Stragapede", ruolo: "ATT", foto: "stragapede-dario.jpg" },
-    { nome: "Andrea", cognome: "Ferro", ruolo: "ATT", foto: "ferro-andrea.jpg", assist: 1 },
-
-    // ruolo in arrivo
-    { nome: "Gabriele", cognome: "Timpano", ruolo: "?", foto: "timpano-gabriele-2.jpg" }
+    { nome: "Andrea", cognome: "Ferro", ruolo: "ATT", foto: "ferro-andrea.jpg", assist: 1 }
   ],
 
   staff: [
