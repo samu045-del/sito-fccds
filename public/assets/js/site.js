@@ -38,7 +38,7 @@
       (C2.tiktok ? '<a class="soc" href="' + esc(C2.tiktok) + '" target="_blank" rel="noopener" aria-label="FC CDS su TikTok">' + tk + '</a>' : '');
     var L = D.societa || {};
     var legal = L.ragioneSociale ? '<p class="legal">' + esc(L.ragioneSociale) + ' · Sede legale: ' + esc(L.sede) + ' · C.F. ' + esc(L.codiceFiscale) + ' · P.IVA ' + esc(L.partitaIva) + ' · PEC: <a href="mailto:' + esc(L.pec) + '">' + esc(L.pec) + '</a></p>' : '';
-    f.innerHTML = '<div class="wrap"><img src="assets/img/monogramma.png" alt="Monogramma CDS"><div class="social">' + social + '</div><nav aria-label="Link legali"><a href="#">Privacy policy</a><a href="#">Cookie policy</a></nav><span>© ' + new Date().getFullYear() + ' FC CDS</span></div>' +
+    f.innerHTML = '<div class="wrap"><img src="assets/img/monogramma.png" alt="Monogramma CDS"><div class="social">' + social + '</div><nav aria-label="Link legali"><a href="privacy.html">Privacy policy</a><a href="cookie.html">Cookie policy</a></nav><span>© ' + new Date().getFullYear() + ' FC CDS</span></div>' +
       (legal ? '<div class="wrap legal-wrap">' + legal + '</div>' : '');
   }
 
@@ -171,7 +171,7 @@
   /* ---------- CALENDARIO & CLASSIFICA ---------- */
   if (page === 'calendario') {
     var R = D.riepilogo || {};
-    $('#stats').innerHTML = '<div><b>' + esc(R.posizione) + '</b><span>POSIZIONE</span></div><div><b>' + esc(R.punti) + '</b><span>PUNTI</span></div><div><b>' + esc(R.vittorie) + '</b><span>VITTORIE</span></div><div><b>' + esc(R.golFatti) + '</b><span>GOL FATTI</span></div>' + (R.golSubiti != null ? '<div><b>' + esc(R.golSubiti) + '</b><span>GOL SUBITI</span></div>' : '');
+    $('#stats').innerHTML = '<div><b>' + esc(R.posizione) + '</b><span>POSIZIONE</span></div><div><b>' + esc(R.punti) + '</b><span>PUNTI</span></div><div><b>' + esc(R.golFatti) + '</b><span>GOL FATTI</span></div>' + (R.golSubiti != null ? '<div><b>' + esc(R.golSubiti) + '</b><span>GOL SUBITI</span></div>' : '');
     $('#fixtures').innerHTML = D.calendario.map(function (m) {
       if (m.stato === 'riposo') return '<li class="rest"><span class="g">' + m.g + '</span><span class="d">' + esc(m.data) + '</span><span class="m">Turno di riposo</span><span class="r"><span class="tag tag-n">RIPOSO</span></span></li>';
       var cls = m.stato === 'prossima' ? 'next' : (m.ris ? 'win' : '');
