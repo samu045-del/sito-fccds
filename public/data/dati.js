@@ -12,25 +12,25 @@ window.CDS = {
   giornataInCorso: false, // metti false quando sono state giocate tutte le partite della giornata
 
   prossimaPartita: {
-    giornata: "G6",
-    data: "2026-11-22T11:00:00+01:00",
-    etichettaData: "Domenica 22 novembre 2026 · ore 11:00",
-    casa: "Pol. Pian Due Torri",
-    trasferta: "FC CDS",
-    inCasa: false,
-    campo: "Pian Due Torri, Lungotevere della Magliana 95, Roma",
-    linkMappa: "https://www.google.com/maps/search/?api=1&query=Lungotevere%20della%20Magliana%2095%2C%20Roma"
+    giornata: "G7",
+    data: "2026-11-28T18:00:00+01:00",
+    etichettaData: "Sabato 28 novembre 2026 · ore 18:00",
+    casa: "FC CDS",
+    trasferta: "Pro Calcio Cerveteri",
+    inCasa: true,
+    campo: "Centro Sportivo Dabliu Eur",
+    linkMappa: "https://www.google.com/maps/search/?api=1&query=Dabliu%20Eur%20Sport%20Club%2C%20Viale%20Egeo%2098%2C%20Roma"
   },
 
   ultimaPartita: {
-    giornata: "G5",
-    etichettaData: "Sabato 14 novembre 2026",
-    casa: "FC CDS",
-    trasferta: "Real Roma Nord",
-    golCasa: 2,
-    golTrasferta: 2,
-    esito: "N",
-    marcatoriCDS: ["Sanseverino", "Mercurio"]
+    giornata: "G6",
+    etichettaData: "Domenica 22 novembre 2026",
+    casa: "Pol. Pian Due Torri",
+    trasferta: "FC CDS",
+    golCasa: 0,
+    golTrasferta: 4,
+    esito: "V",
+    marcatoriCDS: ["Picci (2)", "Dileo", "Biraschi"]
   },
 
   // Campo di casa (usato in home, Il Club e Contatti)
@@ -92,8 +92,8 @@ window.CDS = {
     { g: "G3", data: "Sab 31 ott · 18:00", casa: "FC CDS", trasferta: "Palmarola Club", ris: "7-3", stato: "V", video: "M16NWXeht60" },
     { g: "G4", data: "Dom 8 nov · 15:00", casa: "Atletico", trasferta: "FC CDS", ris: "1-3", stato: "V" },
     { g: "G5", data: "Sab 14 nov · 18:00", casa: "FC CDS", trasferta: "Real Roma Nord", ris: "2-2", stato: "N", video: "L2PwtsWMY5k" },
-    { g: "G6", data: "Dom 22 nov · 11:00", casa: "Pol. Pian Due Torri", trasferta: "FC CDS", stato: "prossima" },
-    { g: "G7", data: "Sab 28 nov · 18:00", casa: "FC CDS", trasferta: "Pro Calcio Cerveteri" },
+    { g: "G6", data: "Dom 22 nov · 11:00", casa: "Pol. Pian Due Torri", trasferta: "FC CDS", ris: "0-4", stato: "V" },
+    { g: "G7", data: "Sab 28 nov · 18:00", casa: "FC CDS", trasferta: "Pro Calcio Cerveteri", stato: "prossima" },
     { g: "G8", data: "Dom 6 dic · 15:00", casa: "F.C. Palombara", trasferta: "FC CDS" },
     { g: "G9", data: "Dom 13 dic · 15:00", casa: "Black Lions", trasferta: "FC CDS" },
     { g: "G10", data: "Sab 19 dic · 18:00", casa: "FC CDS", trasferta: "Academy Monti della Tolfa" },
@@ -125,9 +125,10 @@ window.CDS = {
   ],
 
   marcatori: [
-    { nome: "Picci", gol: 11, nota: "2 su rigore" },
+    { nome: "Picci", gol: 13, nota: "2 su rigore" },
     { nome: "Mercurio", gol: 2 },
-    { nome: "Dileo", gol: 1 },
+    { nome: "Dileo", gol: 2 },
+    { nome: "Biraschi", gol: 1 },
     { nome: "Mollo", gol: 1 },
     { nome: "Sanseverino", gol: 1 }
   ],
@@ -145,7 +146,7 @@ window.CDS = {
     { nome: "Elia", cognome: "Manuri", ruolo: "POR", foto: "manuri-elia.jpg", compleanno: "08-10" },
     { nome: "Pierangelo", cognome: "Paniccia", ruolo: "POR", foto: "paniccia-pierangelo.jpg", compleanno: "15-05" },
 
-    { nome: "Alessio", cognome: "Biraschi", ruolo: "DIF", foto: "biraschi-alessio.jpg", compleanno: "27-01" },
+    { nome: "Alessio", cognome: "Biraschi", ruolo: "DIF", foto: "biraschi-alessio.jpg", gol: 1, compleanno: "27-01" },
     { nome: "Marco", cognome: "Capoccetti", ruolo: "DIF", foto: "capoccetti-marco.jpg", compleanno: "21-04" },
     { nome: "Andrea", cognome: "De Dominicis", ruolo: "DIF", foto: "dedominicis-andrea.jpg", compleanno: "17-03" },
     { nome: "Piergiorgio", cognome: "Ferri", ruolo: "DIF", foto: "ferri-piergiorgio.jpg", compleanno: "18-08" },
@@ -166,9 +167,9 @@ window.CDS = {
     { nome: "Gabriele", cognome: "Timpano", ruolo: "CEN", foto: "timpano-gabriele-2.jpg" },
 
     { nome: "Alessio", cognome: "Di Fabrizio", ruolo: "ATT", foto: "difabrizio-alessio-2.jpg" },
-    { nome: "Gianmarco", cognome: "Dileo", ruolo: "ATT", foto: "dileo-gianmarco.jpg", gol: 1 },
+    { nome: "Gianmarco", cognome: "Dileo", ruolo: "ATT", foto: "dileo-gianmarco.jpg", gol: 2 },
     { nome: "Francesco", cognome: "Mercurio", ruolo: "ATT", foto: "mercurio-francesco.jpg", gol: 2, assist: 1, compleanno: "21-01" },
-    { nome: "Antonio Giulio", cognome: "Picci", ruolo: "ATT", foto: "picci-antonio-2.jpg", gol: 11, compleanno: "19-08" },
+    { nome: "Antonio Giulio", cognome: "Picci", ruolo: "ATT", foto: "picci-antonio-2.jpg", gol: 13, compleanno: "19-08" },
     { nome: "Gianluca", cognome: "Raho", ruolo: "ATT", foto: "raho-gianluca.jpg", compleanno: "07-04" },
     { nome: "Dario", cognome: "Stragapede", ruolo: "ATT", foto: "stragapede-dario.jpg" },
     { nome: "Andrea", cognome: "Ferro", ruolo: "ATT", foto: "ferro-andrea.jpg", assist: 1 }
