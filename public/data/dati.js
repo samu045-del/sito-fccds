@@ -4,11 +4,11 @@
   Questo è l'unico file da modificare ogni settimana.
   Dopo ogni partita aggiorna: prossimaPartita, ultimaPartita, calendario, classifica, marcatori.
   Fonte classifica e marcatori: Tuttocampo (Terza Categoria Roma, Girone A).
-  Ultimo aggiornamento: 14 novembre 2026, dopo FC CDS – Real Roma Nord (5ª giornata in corso).
+  Ultimo aggiornamento: 23 novembre 2026, dopo la 6ª giornata (Pol. Pian Due Torri – FC CDS 0-4).
 */
 window.CDS = {
-  aggiornato: "16 novembre 2026",
-  giornataClassifica: 5,
+  aggiornato: "23 novembre 2026",
+  giornataClassifica: 6,
   giornataInCorso: false, // metti false quando sono state giocate tutte le partite della giornata
 
   prossimaPartita: {
@@ -73,7 +73,7 @@ window.CDS = {
     diretta: "https://www.youtube.com/@FootballClub-CDS/live"
   },
 
-  riepilogo: { posizione: "4°", punti: 10, vittorie: "3/4", golFatti: 16, golSubiti: 9 },
+  riepilogo: { posizione: "2°", punti: 13, vittorie: "3/4", golFatti: 20, golSubiti: 9 },
 
   // Nomi corti usati solo nel calendario (in classifica resta il nome completo)
   nomiBrevi: {
@@ -107,21 +107,21 @@ window.CDS = {
   // squadra, punti, giocate, vinte, pari, perse, gol fatti, gol subiti, differenza
   // ordine: punti, poi differenza reti, poi gol fatti
   classifica: [
-    ["Pro Calcio Cerveteri",  13,  5,  4,  1,  0,  17,  6,  11],
-    ["Academy Monti della Tolfa",  12,  4,  4,  0,  0,  14,  5,  9],
-    ["DLF Youth Academy",  10,  5,  3,  1,  1,  22,  10,  12],
-    ["FC CDS",  10,  4,  3,  1,  0,  16,  9,  7],
-    ["F.C. Palombara",  10,  5,  3,  1,  1,  11,  6,  5],
-    ["Tusker Roma",  9,  5,  3,  0,  2,  12,  6,  6],
-    ["Real Roma Nord",  9,  5,  2,  3,  0,  11,  6,  5],
-    ["Atletico",  6,  5,  2,  0,  3,  13,  13,  0],
+    ["Pro Calcio Cerveteri",  14,  6,  4,  2,  0,  21,  10,  11],
+    ["FC CDS",  13,  5,  4,  1,  0,  20,  9,  11],
+    ["Academy Monti della Tolfa",  13,  5,  4,  1,  0,  16,  7,  9],
+    ["Real Roma Nord",  12,  6,  3,  3,  0,  13,  6,  7],
+    ["DLF Youth Academy",  11,  6,  3,  2,  1,  25,  13,  12],
+    ["F.C. Palombara",  11,  6,  3,  2,  1,  15,  10,  5],
+    ["Tusker Roma",  10,  6,  3,  1,  2,  15,  9,  6],
+    ["Atletico",  7,  6,  2,  1,  3,  15,  15,  0],
+    ["Amatori Allumiere 1983",  6,  6,  2,  0,  4,  17,  18,  -1],
     ["GDZ Campagnano",  6,  5,  2,  0,  3,  12,  14,  -2],
-    ["Vigor Mellis",  4,  4,  1,  1,  2,  7,  9,  -2],
-    ["Amatori Allumiere 1983",  3,  5,  1,  0,  4,  15,  17,  -2],
-    ["Palmarola Club",  3,  5,  1,  0,  4,  10,  17,  -7],
-    ["Pol. Pian Due Torri",  3,  5,  1,  0,  4,  6,  13,  -7],
-    ["Black Lions",  3,  4,  1,  0,  3,  4,  15,  -11],
-    ["Delta Calcio",  0,  4,  0,  0,  4,  2,  26,  -24]
+    ["Palmarola Club",  6,  6,  2,  0,  4,  14,  18,  -4],
+    ["Vigor Mellis",  4,  5,  1,  1,  3,  8,  11,  -3],
+    ["Pol. Pian Due Torri",  3,  6,  1,  0,  5,  6,  17,  -11],
+    ["Black Lions",  3,  5,  1,  0,  4,  4,  17,  -13],
+    ["Delta Calcio",  0,  5,  0,  0,  5,  3,  30,  -27]
   ],
 
   marcatori: [
