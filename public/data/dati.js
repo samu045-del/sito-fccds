@@ -155,6 +155,7 @@ window.CDS = {
     { nome: "Andrea", cognome: "Politi", ruolo: "DIF", foto: "politi-andrea.jpg", compleanno: "14-10" },
     { nome: "Damiano", cognome: "Saccares", ruolo: "DIF", foto: "saccares-damiano-2.jpg", compleanno: "12-05" },
     { nome: "Alessio", cognome: "Sanfilippo", ruolo: "DIF", foto: "sanfilippo-alessio.jpg", compleanno: "31-10" },
+    { nome: "Francesco", cognome: "Torzulli", ruolo: "DIF", foto: "torzulli-francesco.jpg", compleanno: "19-03" },
 
     { nome: "Matteo", cognome: "Carice", ruolo: "CEN", foto: "carice-matteo.jpg", assist: 1, compleanno: "20-12" },
     { nome: "Daniele", cognome: "Cicivelli", ruolo: "CEN", foto: "cicivelli-daniele.jpg", compleanno: "28-10" },
@@ -163,7 +164,6 @@ window.CDS = {
     { nome: "Simone", cognome: "Sanseverino", ruolo: "CEN", foto: "sanseverino-simone.jpg", gol: 1, assist: 2, compleanno: "12-04" },
     { nome: "Salvatore", cognome: "Scopelliti", ruolo: "CEN", foto: "scopelliti-salvatore.jpg" },
     { nome: "Diego", cognome: "Testi", ruolo: "CEN", foto: "testi-diego.jpg", compleanno: "27-07" },
-    { nome: "Francesco", cognome: "Torzulli", ruolo: "CEN", foto: "torzulli-francesco.jpg", compleanno: "19-03" },
     { nome: "Gabriele", cognome: "Timpano", ruolo: "CEN", foto: "timpano-gabriele-2.jpg" },
 
     { nome: "Alessio", cognome: "Di Fabrizio", ruolo: "ATT", foto: "difabrizio-alessio-2.jpg" },
