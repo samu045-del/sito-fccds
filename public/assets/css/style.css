@@ -270,6 +270,10 @@ img.mini,.badge-d.mini{width:24px;height:24px;flex:none;object-fit:contain}
 .site-footer .legal-wrap{padding-top:0;border-top:1px solid rgba(255,255,255,.1)}
 .site-footer .legal{margin:16px 0 0;font-size:12px;line-height:1.6;color:var(--soft2)}
 .site-footer .legal a{color:var(--soft2)}
+.site-footer .credit-wrap{padding-top:0;padding-bottom:22px}
+.site-footer .credit{margin:0;font-size:11px;opacity:.6}
+.site-footer .credit a{text-decoration:underline;text-underline-offset:2px}
+.site-footer .credit a:hover{opacity:1;color:#fff}
 
 /* Icona YouTube nelle partite in casa */
 .fixtures .yt-mini{display:inline-flex;padding:4px;margin:-4px 0;line-height:0;border-radius:6px}

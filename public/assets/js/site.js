@@ -39,7 +39,18 @@
     var L = D.societa || {};
     var legal = L.ragioneSociale ? '<p class="legal">' + esc(L.ragioneSociale) + ' · Sede legale: ' + esc(L.sede) + ' · C.F. ' + esc(L.codiceFiscale) + ' · P.IVA ' + esc(L.partitaIva) + ' · PEC: <a href="mailto:' + esc(L.pec) + '">' + esc(L.pec) + '</a></p>' : '';
     f.innerHTML = '<div class="wrap"><img src="assets/img/monogramma.png" alt="Monogramma CDS"><div class="social">' + social + '</div><nav aria-label="Link legali"><a href="privacy.html">Privacy policy</a><a href="cookie.html">Cookie policy</a></nav><span>© ' + new Date().getFullYear() + ' FC CDS</span></div>' +
-      (legal ? '<div class="wrap legal-wrap">' + legal + '</div>' : '');
+      (legal ? '<div class="wrap legal-wrap">' + legal + '</div>' : '') +
+      '<div class="wrap credit-wrap"><p class="credit">Fatto in 24 ore con <a href="https://prontodomani.it" target="_blank" rel="noopener">prontodomani.it</a></p></div>';
+  }
+
+  /* ---------- Statistiche: Cloudflare Web Analytics (senza cookie) ---------- */
+  var A = D.analytics || {};
+  if (A.cloudflareToken && /fccds\.it$/.test(location.hostname)) {
+    var cf = document.createElement('script');
+    cf.defer = true;
+    cf.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    cf.setAttribute('data-cf-beacon', JSON.stringify({ token: A.cloudflareToken }));
+    document.body.appendChild(cf);
   }
 
   /* ---------- Countdown ---------- */

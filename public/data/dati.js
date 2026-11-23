@@ -183,6 +183,10 @@ window.CDS = {
     { nome: "Gaetano", cognome: "Carnevale", ruolo: "Creator", foto: "carnevale-gaetano.jpg" }
   ],
 
+  // Statistiche Cloudflare Web Analytics (senza cookie): token dalla dashboard Cloudflare > Web Analytics.
+  // Vuoto = statistiche spente.
+  analytics: { cloudflareToken: "" },
+
   // Dati societari (obbligatori nel footer)
   societa: {
     ragioneSociale: "ASD Football Club Corriere dello Sport",
