@@ -185,7 +185,7 @@ window.CDS = {
 
   // Statistiche Cloudflare Web Analytics (senza cookie): token dalla dashboard Cloudflare > Web Analytics.
   // Vuoto = statistiche spente.
-  analytics: { cloudflareToken: "" },
+  analytics: { cloudflareToken: "61164b90acc840fdbfb24837836a7631" },
 
   // Dati societari (obbligatori nel footer)
   societa: {
